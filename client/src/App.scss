@@ -1,0 +1,30 @@
+.app {
+  .login,
+  .register {
+    .background {
+      .background__image {
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+      }
+    }
+    .form-input {
+      background-color: oldlace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .form-header-logo {
+        width: 200px;
+        height: 200px;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+      .form-content {
+        width: 40%;
+      }
+    }
+  }
+}
