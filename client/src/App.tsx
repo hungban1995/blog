@@ -10,11 +10,11 @@ import Write from "./pages/Write";
 
 const Layout = () => {
   return (
-    <>
+    <div className="container layout-blog">
       <Navbar />
       <Outlet />
       <Footer />
-    </>
+    </div>
   );
 };
 const router = createBrowserRouter([
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
 ]);
 function App() {
   return (
-    <div className="app ">
+    <div className="app">
       <RouterProvider router={router} />
     </div>
   );

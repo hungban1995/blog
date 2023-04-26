@@ -1,21 +1,25 @@
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import bgImg from "../images/background.png";
-import logoBlog from "../images/logo_blog.png";
+
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { Link } from "react-router-dom";
+import images from "../images";
 
 function Login() {
   return (
     <div className="login">
       <Row className="p-0 mx-0">
         <Col className="background p-0" sm={3}>
-          <img className="background__image" src={bgImg} alt="background" />
+          <img
+            className="background__image"
+            src={images.BgImg}
+            alt="background"
+          />
         </Col>
-        <Col className="form-input p-0" sm={9}>
+        <Col className="form-input-action p-0" sm={9}>
           <div className="form-header-logo">
-            <img src={logoBlog} alt="logo"></img>
+            <img src={images.LogoBlog} alt="logo"></img>
           </div>
           <div className="form-content">
             <Form>
@@ -30,7 +34,11 @@ function Login() {
                 type="password"
                 placeholder="Input you password"
               />
-              <Button variant="primary " className="mb-3 w-100" type="submit">
+              <Button
+                variant="outline-primary "
+                className="mb-3 w-100"
+                type="submit"
+              >
                 Login
               </Button>
               <p>Return error</p>
