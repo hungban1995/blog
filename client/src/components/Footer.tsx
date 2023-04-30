@@ -10,7 +10,7 @@ function Footer() {
     <div className="footer-blog">
       <div className="footer-blog-content">
         <div className="footer-blog-content__image">
-          <img src={images.LogoBlog} alt="logo-blog" />
+          <img src={images.Logo} alt="Logo-blog" />
         </div>
         <p className="footer-blog-content__des">
           A minimal, functional theme for running a paid-membership publication
@@ -38,28 +38,28 @@ function Footer() {
         <div className="footer-blog-navbar-menu">
           <small>About</small>
           <ul>
-            <li>F</li>
-            <li>t</li>
-            <li>i</li>
-            <li>g</li>
+            <li>Style Guide</li>
+            <li>Features</li>
+            <li>Contact</li>
+            <li>404</li>
           </ul>
         </div>
         <div className="footer-blog-navbar-menu">
-          <small>About</small>
+          <small>Features</small>
           <ul>
-            <li>F</li>
-            <li>t</li>
-            <li>i</li>
-            <li>g</li>
+            <li>Demos</li>
+            <li>Light version</li>
+            <li>Color version</li>
+            <li>Dark version</li>
           </ul>
         </div>
         <div className="footer-blog-navbar-menu">
-          <small>About</small>
+          <small>Membership</small>
           <ul>
-            <li>F</li>
-            <li>t</li>
-            <li>i</li>
-            <li>g</li>
+            <li>Account</li>
+            <li>Membership</li>
+            <li>Authors</li>
+            <li>Tags</li>
           </ul>
         </div>
       </div>

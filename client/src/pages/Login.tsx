@@ -18,8 +18,8 @@ function Login() {
           />
         </Col>
         <Col className="form-input-action p-0" sm={9}>
-          <div className="form-header-logo">
-            <img src={images.LogoBlog} alt="logo"></img>
+          <div className="form-header-Logo">
+            <img src={images.Logo} alt="Logo"></img>
           </div>
           <div className="form-content">
             <Form>

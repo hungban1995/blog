@@ -18,7 +18,7 @@ function Single() {
             iure nostrum dolores dolore ullam minima consequatur, a nemo ipsam.
           </p>
           <div className="single-header-content-info">
-            <div>
+            <div className="single-header-content-info-author">
               <div className="single-header-content-info__avatar">
                 <img
                   src="https://basho.fueko.net/content/images/size/w300/2022/03/joshua-oyebanji-kMC1v6rBHMI-unsplash-2.jpg"

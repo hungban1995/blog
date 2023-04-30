@@ -17,11 +17,11 @@ function Register() {
           />
         </Col>
         <Col className="form-input-action p-0" sm={9}>
-          <div className="form-header-logo">
+          <div className="form-header-Logo">
             <img
-              src={images.LogoBlog}
-              alt="logo"
-              className="form-header__logo"
+              src={images.Logo}
+              alt="Logo"
+              className="form-header__Logo"
             ></img>
           </div>
           <div className="form-content">

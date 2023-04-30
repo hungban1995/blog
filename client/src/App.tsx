@@ -7,10 +7,11 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Single from "./pages/Single";
 import Write from "./pages/Write";
+import ErrorPage from "./pages/ErrorPage";
 
 const Layout = () => {
   return (
-    <div className="container layout-blog">
+    <div className="layout-blog">
       <Navbar />
       <Outlet />
       <Footer />
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    path: "/*",
+    element: <ErrorPage />,
   },
 ]);
 function App() {

@@ -6,8 +6,7 @@ function Home() {
     <div className="home-container">
       <div className="home-title-blog">
         <h1>
-          <span>Hey there!</span> View and share thoughts, stories and ideas
-          with the world.
+          <span>Hey there!</span> See our thoughts, stories and ideas.
         </h1>
       </div>
       <div className="home-featured-blog">
@@ -15,8 +14,9 @@ function Home() {
         <SlickSlide />
       </div>
       <div className="home-recent-blog">
-        <h1>See another written lately</h1>
+        <h1>See what we’ve written lately</h1>
         <div className="home-recent-blog-items">
+          <ItemBlog />
           <ItemBlog />
           <ItemBlog />
           <ItemBlog />
@@ -33,7 +33,6 @@ function Home() {
       <div className="home-recommend-blog">
         <h1>Recommended</h1>
         <div className="home-recommend-blog-items">
-          <ItemBlog />
           <ItemBlog />
           <ItemBlog />
           <ItemBlog />
