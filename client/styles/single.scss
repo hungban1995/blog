@@ -1,0 +1,90 @@
+//single page
+.single-container {
+  margin: 50px 0;
+  .single-header {
+    display: flex;
+    justify-content: space-between;
+    .single-header-content {
+      width: 60%;
+      .single-header-content-tag {
+        display: flex;
+        .single-header-content-tag__item {
+          &:hover {
+            cursor: pointer;
+            background: gray;
+          }
+          margin-right: 10px;
+          padding: 0 10px;
+          background-color: gainsboro;
+          border-radius: 10px;
+          a {
+            text-decoration: none;
+          }
+        }
+      }
+      .single-header-content-title {
+        font-size: 4.13vw;
+        font-weight: bold;
+      }
+      p {
+        font-size: 24px;
+      }
+      .single-header-content-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .single-header-content-info-author {
+          display: flex;
+          align-items: center;
+          .single-header-content-info__avatar {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+
+            img {
+              object-fit: cover;
+              width: 100%;
+              height: 100%;
+              border-radius: 50%;
+            }
+          }
+          .single-header-content-info__author {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+
+        .single-header-content-info__action {
+          .action-icon {
+            background-color: lightcoral;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            padding: 5px;
+            cursor: pointer;
+            transition: all 0.25ms ease-out;
+            &:hover {
+              transform: scale(1.2);
+            }
+            &:first-child {
+              background-color: lightblue;
+            }
+          }
+        }
+      }
+    }
+    .single-header-image {
+      width: 30%;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 15px;
+      }
+    }
+  }
+  .single-content {
+    margin-top: 20px;
+  }
+}
