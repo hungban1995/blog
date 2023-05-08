@@ -3,11 +3,15 @@ import createError from 'http-errors';
 import usersRouter from './api/routers/users.router'
 import parseConfig from './configs/parser';
 import { catchError } from './api/helpers/type';
+import * as dotenv from "dotenv"
+dotenv.config()
 const port = 8080 || 5000
 const app: Express = express()
 
 const handleError: catchError = (error, req, res, next) => {
+    console.log('Error::: ', error);
     if (error && error.status) return res.status(error.status).json({ status: error.status, message: error.message })
+    res.status(500).json({ message: 'Internal server error!' })
 }
 parseConfig(app)
 //routes

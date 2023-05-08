@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.0",
@@ -25,6 +26,7 @@
     "@types/http-errors": "^2.0.1",
     "@types/jsonwebtoken": "^9.0.2",
     "@types/mysql": "^2.15.21",
+    "@types/node": "^20.1.0",
     "nodemon": "^2.0.22",
     "typescript": "^5.0.4"
   }
