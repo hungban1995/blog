@@ -1,0 +1,25 @@
+@import "slick-carousel/slick/slick.css";
+@import "slick-carousel/slick/slick-theme.css";
+.slick-slider {
+  .slick-arrow {
+    background-color: rgb(249, 174, 36);
+    box-shadow: 1px 1px 5px 1px #0000006f;
+    z-index: 1;
+    width: 50px;
+    height: 30px;
+    border-radius: 5px;
+    transition: all 0.3s ease-out;
+    opacity: 0;
+    &:hover {
+      opacity: 0.8;
+    }
+    &.slick-prev {
+      position: absolute;
+      left: 0;
+    }
+    &.slick-next {
+      position: absolute;
+      right: 0;
+    }
+  }
+}
