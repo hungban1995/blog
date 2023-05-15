@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-
+import { decodeType } from '../helpers/type'
 
 export const verifyToken = (token: string, secretKey: string) => {
     return new Promise((resolve, rejects) => {

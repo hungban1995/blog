@@ -1,4 +1,10 @@
 @media screen and (max-width: 600px) {
+  .register,
+  .login {
+    .background {
+      display: none;
+    }
+  }
   .layout-blog {
     .navbar-blog {
       .navbar-blog-menu {
@@ -60,6 +66,12 @@
   }
 }
 @media screen and (max-width: 480px) {
+  .register,
+  .login {
+    .background {
+      display: none;
+    }
+  }
   .footer-blog {
     display: flex;
     flex-direction: column;
@@ -71,5 +83,8 @@
   .home-recent-blog-items {
     display: flex !important;
     flex-direction: column;
+  }
+  .image {
+    grid-template-columns: 49.5% 49.5% !important;
   }
 }
