@@ -1,9 +1,9 @@
 import dynamic from "next/dynamic";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+const Editor = dynamic(() => import("../../components/Ckeditor"), {
+  ssr: false,
+});
 function Write() {
-  const Editor = dynamic(() => import("../../components/Ckeditor"), {
-    ssr: false,
-  });
   const [content, setContent] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [valueInput, setValueInput] = useState({
@@ -11,10 +11,8 @@ function Write() {
     description: "",
     category: "",
   });
-
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, checked } = e.target;
-
     setValueInput((prevState) => ({ ...prevState, [name]: value }));
     if (checked) {
       setTags((prev) => [...prev, value]);
@@ -28,8 +26,22 @@ function Write() {
     const post = {
       content,
       tags,
+      category: valueInput.category,
       title: valueInput.title,
       description: valueInput.description,
+      isDraft: false,
+    };
+    console.log(post);
+  };
+  const handlePostDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const post = {
+      content,
+      tags,
+      category: valueInput.category,
+      title: valueInput.title,
+      description: valueInput.description,
+      isDraft: true,
     };
     console.log(post);
   };
@@ -133,8 +145,8 @@ function Write() {
               <input type="file" />
             </div>
             <div className="form-write-right-action__submit">
-              <button onClick={handlePost}>Save as draft</button>
-              <button>Post</button>
+              <button onClick={handlePostDraft}>Save as draft</button>
+              <button onClick={handlePost}>Post</button>
             </div>
           </div>
         </div>
