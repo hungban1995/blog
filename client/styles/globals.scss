@@ -7,14 +7,17 @@ body {
 }
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "./home.scss";
-@import "./auth.scss";
+@import "./user.scss";
 @import "./response.scss";
 @import "./single.scss";
 @import "./write.scss";
 @import "./item.scss";
+@import "./update-data.scss";
+@import "./images.scss";
 
 @import "./slide.scss";
 
 @import "./layout.scss";
 @import "./navbar.scss";
 @import "./footer.scss";
+@import "./notification.scss";

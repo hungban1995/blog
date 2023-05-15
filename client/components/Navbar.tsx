@@ -1,13 +1,17 @@
 import images from "../images";
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
+import { UserType } from "@/pages/register";
+import { useDispatch, useSelector } from "react-redux";
+import { getRefresh } from "@/stores/refreshReducer";
 function Navbar() {
+  const dispatch = useDispatch();
   const route = useRouter();
-  const [currentUser, setCurrentUser] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const { userLogin } = useSelector((state: any) => state.user);
   return (
     <div className="navbar-blog">
       <div className="navbar-blog__Logo" onClick={() => route.push("/")}>
@@ -40,12 +44,22 @@ function Navbar() {
               Search <CiSearch />
             </span>
           </li>
-          {currentUser ? (
+          {userLogin?.id ? (
             <li className="item-menu">
               <Link href="/profile">
-                <span className="item-menu__action">User</span>
+                <span className="item-menu__action">{userLogin.username}</span>
               </Link>
-              <span className="item-menu__action">Logout</span>
+              <span
+                className="item-menu__action"
+                onClick={() => {
+                  localStorage.removeItem("userId");
+                  localStorage.removeItem("refreshToken");
+                  localStorage.removeItem("accessToken");
+                  dispatch(getRefresh());
+                }}
+              >
+                Logout
+              </span>
               <Link href="/write">
                 <span className="item-menu__action write">Write</span>
               </Link>

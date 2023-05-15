@@ -1,4 +1,4 @@
-import { object, string, number, date, InferType } from 'yup';
+import { object, string } from 'yup';
 import { functionType } from '../helpers/type';
 
 const userRegisterSchema = object({
@@ -8,7 +8,6 @@ const userRegisterSchema = object({
     retypePassword: string().required().min(6)
 });
 const userLoginSchema = object({
-
     email: string().email().required(),
     password: string().required().min(6),
 

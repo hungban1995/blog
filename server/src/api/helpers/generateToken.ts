@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 
-// type functionType = (payload: { id: string }, secretKey: string) ;
 //create access token
 export const createAccessToken = (payload: { id: number, role: string }, secretKey: string) => {
     return new Promise((resolve, reject) => {
