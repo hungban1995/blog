@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { UserType } from "@/pages/register";
 import { useDispatch } from "react-redux";
 import { getNotify } from "@/stores/notificationReducer";
+import { getRefresh } from "@/stores/refreshReducer";
 const schema = yup
   .object({
     username: yup.string().required(),
@@ -19,8 +20,9 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 type Props = {
   user: UserType;
+  setUpdate: (update: boolean) => void;
 };
-export default function UpdateUser({ user }: Props) {
+export default function UpdateUser({ user, setUpdate }: Props) {
   const dispatch = useDispatch();
   const {
     reset,
@@ -41,6 +43,8 @@ export default function UpdateUser({ user }: Props) {
       dispatch(
         getNotify({ show: true, message: res.data.message, status: "success" })
       );
+      setUpdate(false);
+      dispatch(getRefresh());
     } catch (error: any) {
       dispatch(
         getNotify({

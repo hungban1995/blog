@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import UpdateUser from "@/components/FormUpdate/UpdateUser";
-import { Image } from "@/components/ImagesManage";
 import { IMG_URL } from "@/constant";
 import { axiosApi } from "@/libs/fetchData";
 import { getRefresh } from "@/stores/refreshReducer";
@@ -12,17 +11,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ImagesLib = lazy(() => import("@/components/ImagesManage"));
 function Index() {
-  const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { userLogin } = useSelector((state: any) => state.user);
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-  const [value, setValue] = useState<Image | null>(null);
+  const [value, setValue] = useState<number | null>();
   useEffect(() => {
     if (value) {
       axiosApi
-        .put("users/update/" + userLogin.id, { avatar: value.id })
-        .then((res) => console.log(res))
+        .put("users/update/" + userLogin.id, { avatar: value })
+        .then((res) => dispatch(getRefresh()))
         .catch((err) => console.log(err));
     }
   }, [value]);
@@ -75,7 +74,7 @@ function Index() {
             </div>
             {update ? (
               <div className="profile-info-detail-update">
-                <UpdateUser user={userLogin} />
+                <UpdateUser user={userLogin} setUpdate={setUpdate} />
               </div>
             ) : (
               <div className="profile-info-detail-view">
