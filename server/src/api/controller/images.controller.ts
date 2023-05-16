@@ -21,8 +21,7 @@ export const upload: functionType = async (req, res, next) => {
 }
 export const getAll: functionType = async (req, res, next) => {
     try {
-        const images: any = await service.findImages({})
-        if (images.length === 0) return next({ status: 404, message: 'Images not found!' })
+        const images: any = await service.findImages({}, null)
 
         res.status(200).json({ success: true, message: 'Get images success!', images })
 
@@ -34,7 +33,7 @@ export const getAll: functionType = async (req, res, next) => {
 export const getId: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
-        const images: any = await service.findImages({ id: Number(id) })
+        const images: any = await service.findImages({ id: Number(id) }, null)
         if (images.length === 0) return next({ status: 404, message: 'Image not found!' })
         res.status(200).json({ success: true, message: 'Get images success!', images: images[0] })
 
@@ -44,23 +43,23 @@ export const getId: functionType = async (req, res, next) => {
 }
 export const deleteImage: functionType = async (req, res, next) => {
     try {
-        const { id } = req.params
-        const images: any = await service.findImages({ id: Number(id) })
+        const { ids } = req.body
+        const images: any = await service.findImages({}, ids)
         if (images.length === 0) return next({ status: 404, message: 'Image not found!' })
         const accessToken = req.headers.authorization as string
-        const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
-
-        if (decode.id.toString() !== images[0].uploadBy && decode.role !== 'admin') return next({ status: 403, message: "You don't have permission delete this image!" })
-        const PATH = "./public/" + images[0].url;
-        const fsDelete: any = fs.unlink(PATH, (err) => {
-            if (err) {
-                return { error: err };
+        await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
+        for (let i of images) {
+            const PATH = "./public/" + i.url;
+            const fsDelete: any = fs.unlink(PATH, (err) => {
+                if (err) {
+                    return { error: err };
+                }
+            });
+            if (fsDelete && fsDelete.error) {
+                return next(fsDelete.error);
             }
-        });
-        if (fsDelete && fsDelete.error) {
-            return next(fsDelete.error);
         }
-        await service.deleteImage(Number(id))
+        await service.deleteImage(ids)
         res.status(200).json({ success: true, message: "Delete image success!" })
 
     } catch (error) {

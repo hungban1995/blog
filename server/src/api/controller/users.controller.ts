@@ -25,7 +25,7 @@ export const login: functionType = async (req, res, next) => {
         const isMatch = bcrypt.compareSync(req.body.password, user[0].password)
         if (!isMatch) return next({ status: 404, message: 'Password do not match!' })
         const accessToken = await createAccessToken({ id: user[0].id, role: user[0].role }, process.env.ACCESS_TOKEN_SECRET as string)
-        const refreshToken = await createRefreshToken({ id: user[0].id }, process.env.REFRESH_TOKEN_SECRET as string)
+        const refreshToken = await createRefreshToken({ id: user[0].id, role: user[0].role }, process.env.REFRESH_TOKEN_SECRET as string)
         const { password, createdAt, updatedAt, ...data } = user[0]
         res.status(200).json({ success: true, message: 'Login success!', user: data, accessToken, refreshToken })
     } catch (err) {

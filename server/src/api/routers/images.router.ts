@@ -8,7 +8,7 @@ const imagesRouter = async (app: express.Express) => {
     router.get("/get-id/:id", controller.getId);
     // router.put('/update/:id', controller.update)
 
-    router.delete('/delete/:id', controller.deleteImage)
+    router.post('/delete', controller.deleteImage)
     return app.use("/api/images", router);
 }
 export default imagesRouter;

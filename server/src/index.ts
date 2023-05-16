@@ -17,11 +17,11 @@ const handleError: catchError = (error, req, res, next) => {
     if (error && error.status) return res.status(error.status).json({ status: error.status, message: error.message })
     res.status(500).json({ message: 'Internal server error!' })
 }
+parseConfig(app)
 corsConfig(app)
 
 viewEngineConfig(app)
 
-parseConfig(app)
 //routes
 usersRouter(app)
 postsRouter(app)

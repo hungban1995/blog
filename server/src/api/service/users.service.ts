@@ -5,9 +5,9 @@ export const findUser = ({ email, id, username }: UserType) => {
     let q: string
     const params = { email, id, username }
     if (typeof params.email !== "undefined" || typeof params.id !== "undefined" || typeof params.username !== "undefined") {
-        q = "SELECT users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id WHERE users.email = ? OR users.username = ? OR users.id = ? ";
+        q = "SELECT users.password,users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id WHERE users.email = ? OR users.username = ? OR users.id = ? ";
     } else {
-        q = "SELECT users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id ";
+        q = "SELECT users.password,users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id ";
     }
     return new Promise((resolve, reject) => {
         db.query(q, [email, username, id], (err, data) => {
@@ -28,6 +28,7 @@ export const register = (user: UserType) => {
     })
 }
 export const update = (user: UserType) => {
+
     const q = "UPDATE users SET ? WHERE `id` = ?";
     return new Promise((resolve, reject) => {
         db.query(q, [user, user.id], (err, data) => {
