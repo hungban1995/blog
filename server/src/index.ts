@@ -8,6 +8,7 @@ import corsConfig from './configs/cors.config';
 import postsRouter from './api/routers/posts';
 import imagesRouter from './api/routers/images.router';
 import viewEngineConfig from './configs/viewEngine.config';
+import categoriesRouter from './api/routers/categories.router';
 dotenv.config()
 const port = 8080 || 5000
 const app: Express = express()
@@ -17,15 +18,16 @@ const handleError: catchError = (error, req, res, next) => {
     if (error && error.status) return res.status(error.status).json({ status: error.status, message: error.message })
     res.status(500).json({ message: 'Internal server error!' })
 }
+parseConfig(app)
 corsConfig(app)
 
 viewEngineConfig(app)
 
-parseConfig(app)
 //routes
 usersRouter(app)
 postsRouter(app)
 imagesRouter(app)
+categoriesRouter(app)
 app.get('/', (req, res, next) => {
     res.send('Server is on')
 })

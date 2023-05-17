@@ -12,20 +12,21 @@ import { useDispatch, useSelector } from "react-redux";
 
 const ImagesLib = lazy(() => import("@/components/ImagesManage"));
 function Index() {
-  const [update, setUpdate] = useState(false);
+  const [update, setUpdate] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { userLogin } = useSelector((state: any) => state.user);
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-  const [value, setValue] = useState<Image | null>(null);
+  const [selectImage, setSelectImage] = useState<Image | null>();
+
   useEffect(() => {
-    if (value) {
+    if (selectImage) {
       axiosApi
-        .put("users/update/" + userLogin.id, { avatar: value.id })
-        .then((res) => console.log(res))
+        .put("users/update/" + userLogin.id, { avatar: selectImage?.id })
+        .then((res) => dispatch(getRefresh()))
         .catch((err) => console.log(err));
     }
-  }, [value]);
+  }, [selectImage]);
   return (
     <>
       <Head>
@@ -42,7 +43,11 @@ function Index() {
             </div>
           }
         >
-          <ImagesLib show={show} setShow={setShow} setValue={setValue} />
+          <ImagesLib
+            show={show}
+            setShow={setShow}
+            setSelectImage={setSelectImage}
+          />
         </Suspense>
       )}
       <div className="container profile">
@@ -75,7 +80,7 @@ function Index() {
             </div>
             {update ? (
               <div className="profile-info-detail-update">
-                <UpdateUser user={userLogin} />
+                <UpdateUser user={userLogin} setUpdate={setUpdate} />
               </div>
             ) : (
               <div className="profile-info-detail-view">

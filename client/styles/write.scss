@@ -33,20 +33,25 @@
         .form-write-right-option-tags,
         .form-write-right-option-cat {
           padding: 10px;
+          .cat-items {
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .manager-action {
+              font-size: 24px;
+              margin: 5px;
+              cursor: pointer;
+              color: deepskyblue;
+            }
+          }
         }
       }
       .form-write-right-action {
         border: 1px solid rgba(128, 128, 128, 0.5);
         .form-write-right-action__upload {
           margin: 10px;
-          position: relative;
-          input {
-            cursor: pointer;
-            left: 0;
-            top: 0;
-            position: absolute;
-            opacity: 0;
-          }
+          cursor: pointer;
         }
         .form-write-right-action__submit {
           margin: 10px;

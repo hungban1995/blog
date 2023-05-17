@@ -7,7 +7,7 @@ import Modal from "react-bootstrap/Modal";
 import { BiUpload } from "react-icons/bi";
 import { IMG_URL } from "@/constant";
 export type Image = {
-  id?: number;
+  id: number;
   url?: string;
   alt?: string;
   uploadBy?: number;
@@ -15,13 +15,14 @@ export type Image = {
 interface Props {
   show: boolean;
   setShow: (show: boolean) => void;
-  setValue: (value: Image) => void;
+  setSelectImage: (selectImage: Image) => void;
 }
+type fcChoose = (item: Image) => void;
 
-export default function Images({ show, setShow, setValue }: Props) {
+export default function Images({ show, setShow, setSelectImage }: Props) {
   const [refresh, setRefresh] = useState(0);
   const [images, setImages] = useState([]);
-  const [choose, setChoose] = useState(-1);
+  const [choose, setChoose] = useState<Image[]>([]);
   useEffect(() => {
     const getImages = async () => {
       try {
@@ -33,6 +34,16 @@ export default function Images({ show, setShow, setValue }: Props) {
     };
     getImages();
   }, [refresh]);
+  //choose image
+  const handleChooseImage: fcChoose = (item: Image) => {
+    const isSelect = choose.includes(item);
+    if (isSelect) {
+      const newArr = choose.filter((i) => i !== item);
+      setChoose(newArr);
+    } else setChoose([...choose, item]);
+  };
+
+  //upload image
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const image = e.target.files;
@@ -46,7 +57,15 @@ export default function Images({ show, setShow, setValue }: Props) {
       console.log(error);
     }
   };
-
+  //delete image
+  const handleDelete = async () => {
+    try {
+      await axiosApi.post("images/delete", { ids: choose });
+      setRefresh((f) => f + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Modal show={show} onHide={() => setShow(false)}>
       <Modal.Header closeButton>
@@ -63,34 +82,45 @@ export default function Images({ show, setShow, setValue }: Props) {
               onChange={handleUpload}
             />
           </div>
-          {images &&
+          {images.length > 0 ? (
             images.map((item: Image, idx: number) => {
               return (
                 <div
-                  className={"image-item " + (choose === idx ? "active" : "")}
+                  className={
+                    "image-item " + (choose.includes(item) ? "active" : "")
+                  }
                   key={idx}
-                  onClick={() => {
-                    setChoose(idx);
-                  }}
+                  onClick={() => handleChooseImage(item)}
                 >
                   <img src={`${IMG_URL}/${item.url}`} alt={item?.alt} />
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div>Image Not found!</div>
+          )}
         </div>
       </Modal.Body>
       <Modal.Footer>
+        {choose.length === 1 && (
+          <Button
+            variant="primary"
+            onClick={() => {
+              setSelectImage(choose[0]);
+              setShow(false);
+            }}
+          >
+            Save Changes
+          </Button>
+        )}
+        {choose.length > 0 && (
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
+        )}
+
         <Button variant="secondary" onClick={() => setShow(false)}>
           Close
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => {
-            setValue(images[choose]);
-            setShow(false);
-          }}
-        >
-          Save Changes
         </Button>
       </Modal.Footer>
     </Modal>
