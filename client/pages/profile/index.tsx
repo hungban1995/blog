@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import UpdateUser from "@/components/FormUpdate/UpdateUser";
+import { Image } from "@/components/ImagesManage";
 import { IMG_URL } from "@/constant";
 import { axiosApi } from "@/libs/fetchData";
 import { getRefresh } from "@/stores/refreshReducer";
@@ -16,15 +17,16 @@ function Index() {
   const { userLogin } = useSelector((state: any) => state.user);
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
-  const [value, setValue] = useState<number | null>();
+  const [selectImage, setSelectImage] = useState<Image | null>();
+
   useEffect(() => {
-    if (value) {
+    if (selectImage) {
       axiosApi
-        .put("users/update/" + userLogin.id, { avatar: value })
+        .put("users/update/" + userLogin.id, { avatar: selectImage?.id })
         .then((res) => dispatch(getRefresh()))
         .catch((err) => console.log(err));
     }
-  }, [value]);
+  }, [selectImage]);
   return (
     <>
       <Head>
@@ -41,7 +43,11 @@ function Index() {
             </div>
           }
         >
-          <ImagesLib show={show} setShow={setShow} setValue={setValue} />
+          <ImagesLib
+            show={show}
+            setShow={setShow}
+            setSelectImage={setSelectImage}
+          />
         </Suspense>
       )}
       <div className="container profile">

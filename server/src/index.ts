@@ -8,6 +8,7 @@ import corsConfig from './configs/cors.config';
 import postsRouter from './api/routers/posts';
 import imagesRouter from './api/routers/images.router';
 import viewEngineConfig from './configs/viewEngine.config';
+import categoriesRouter from './api/routers/categories.router';
 dotenv.config()
 const port = 8080 || 5000
 const app: Express = express()
@@ -26,6 +27,7 @@ viewEngineConfig(app)
 usersRouter(app)
 postsRouter(app)
 imagesRouter(app)
+categoriesRouter(app)
 app.get('/', (req, res, next) => {
     res.send('Server is on')
 })

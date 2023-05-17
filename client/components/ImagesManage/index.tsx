@@ -15,14 +15,14 @@ export type Image = {
 interface Props {
   show: boolean;
   setShow: (show: boolean) => void;
-  setValue: (value: number) => void;
+  setSelectImage: (selectImage: Image) => void;
 }
-type fcChoose = (item: number) => void;
+type fcChoose = (item: Image) => void;
 
-export default function Images({ show, setShow, setValue }: Props) {
+export default function Images({ show, setShow, setSelectImage }: Props) {
   const [refresh, setRefresh] = useState(0);
   const [images, setImages] = useState([]);
-  const [choose, setChoose] = useState<number[]>([]);
+  const [choose, setChoose] = useState<Image[]>([]);
   useEffect(() => {
     const getImages = async () => {
       try {
@@ -35,7 +35,7 @@ export default function Images({ show, setShow, setValue }: Props) {
     getImages();
   }, [refresh]);
   //choose image
-  const handleChooseImage: fcChoose = (item) => {
+  const handleChooseImage: fcChoose = (item: Image) => {
     const isSelect = choose.includes(item);
     if (isSelect) {
       const newArr = choose.filter((i) => i !== item);
@@ -87,10 +87,10 @@ export default function Images({ show, setShow, setValue }: Props) {
               return (
                 <div
                   className={
-                    "image-item " + (choose.includes(item.id) ? "active" : "")
+                    "image-item " + (choose.includes(item) ? "active" : "")
                   }
                   key={idx}
-                  onClick={() => handleChooseImage(item.id)}
+                  onClick={() => handleChooseImage(item)}
                 >
                   <img src={`${IMG_URL}/${item.url}`} alt={item?.alt} />
                 </div>
@@ -106,7 +106,7 @@ export default function Images({ show, setShow, setValue }: Props) {
           <Button
             variant="primary"
             onClick={() => {
-              setValue(choose[0]);
+              setSelectImage(choose[0]);
               setShow(false);
             }}
           >
