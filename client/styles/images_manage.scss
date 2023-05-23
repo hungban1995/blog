@@ -1,9 +1,9 @@
-.image {
+.image-manager {
   display: grid;
   grid-template-columns: 24.25% 24.25% 24.25% 24.25%;
   column-gap: 1%;
   row-gap: 2%;
-  .image-upload {
+  .image-manager-upload {
     position: relative;
     cursor: pointer;
     display: flex;
@@ -24,7 +24,7 @@
       box-shadow: 2px 2px 5px #fc894d;
     }
   }
-  .image-item {
+  .image-manager-item {
     overflow: hidden;
     display: flex;
     justify-content: center;

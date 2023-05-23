@@ -2,16 +2,15 @@
 import { axiosApi } from "@/libs/fetchData";
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { Suspense, lazy, useEffect, useState } from "react";
-import { Button, Modal, Table } from "react-bootstrap";
+import { Modal, Table } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import {
-  AiOutlineCloseCircle,
-  AiOutlineDelete,
-  AiOutlineEdit,
-} from "react-icons/ai";
+import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 import { Image } from "../ImagesManage";
 import { IMG_URL } from "@/constant";
+import images from "@/images";
+import { useDispatch } from "react-redux";
+import { getNotify } from "@/stores/notificationReducer";
 interface Props {
   activeCat: boolean;
   setActiveCat: (activeCat: boolean) => void;
@@ -25,18 +24,20 @@ const schema = yup
 type FormData = yup.InferType<typeof schema>;
 const ImageLib = lazy(() => import("../ImagesManage"));
 function Categories({ activeCat, setActiveCat }: Props) {
+  const dispatch = useDispatch();
   const [select, setSelect] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(0);
   const [selectImage, setSelectImage] = useState<Image | null>();
+  const [refresh, setRefresh] = useState(0);
   useEffect(() => {
     axiosApi
       .get("categories/get-all")
       .then((res) => setCategories(res.data.categories))
       .catch((error) => console.log(error));
-  }, []);
+  }, [refresh]);
   const {
     reset,
     setValue,
@@ -49,12 +50,37 @@ function Categories({ activeCat, setActiveCat }: Props) {
   });
   const onSubmit = async (data: FormData) => {
     try {
-      const createCat = { ...data, image: selectImage?.id };
-      const res = await axiosApi.post("categories/create", createCat);
-      console.log(res);
+      const newValue = { ...data, image: selectImage?.id };
+      if (edit > 0) {
+        const res = await axiosApi.put("categories/update/" + edit, newValue);
+        dispatch(
+          getNotify({
+            show: true,
+            status: "success",
+            message: res.data.message,
+          })
+        );
+      } else {
+        const res = await axiosApi.post("categories/create", newValue);
+        dispatch(
+          getNotify({
+            show: true,
+            status: "success",
+            message: res.data.message,
+          })
+        );
+      }
+      setEdit(0);
       reset();
-    } catch (error) {
-      console.log(error);
+      setRefresh((f) => f + 1);
+    } catch (error: any) {
+      dispatch(
+        getNotify({
+          show: true,
+          status: "error",
+          message: error.response.data.message,
+        })
+      );
     }
   };
   useEffect(() => {
@@ -75,7 +101,24 @@ function Categories({ activeCat, setActiveCat }: Props) {
       setSelect(select.filter((item: any) => item !== id));
     }
   };
-  const handleClickDel = async () => {};
+  const handleClickDel = async () => {
+    try {
+      const res = await axiosApi.delete("categories/delete", {
+        data: select,
+      });
+      dispatch(
+        getNotify({
+          show: true,
+          status: "success",
+          message: res.data.message,
+        })
+      );
+      setSelect([]);
+      setRefresh((f) => f + 1);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <Modal
       show={activeCat}
@@ -86,7 +129,7 @@ function Categories({ activeCat, setActiveCat }: Props) {
       {show && (
         <Suspense
           fallback={
-            <div style={{ backgroundColor: "red", height: "100vh" }}>
+            <div style={{ backgroundColor: "red", height: "100%" }}>
               Loading
             </div>
           }
@@ -102,15 +145,19 @@ function Categories({ activeCat, setActiveCat }: Props) {
         <Modal.Title>Categories Manager</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="upload-image">
-            <span onClick={() => setShow(true)}>Upload Image</span>
+        <div className="upload-image">
+          <div className="upload-image__action" onClick={() => setShow(true)}>
             <img
-              style={{ width: "100px" }}
-              src={`${IMG_URL}/${selectImage?.url}`}
-              alt={selectImage?.alt}
+              src={
+                selectImage?.url
+                  ? `${IMG_URL}/${selectImage?.url}`
+                  : `https://www.pngfind.com/pngs/m/66-661092_png-file-upload-image-icon-png-transparent-png.png`
+              }
+              alt={selectImage?.alt || "cat-image"}
             />
           </div>
+        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <input
             className="form-control mt-3"
             placeholder="Title"
@@ -124,8 +171,20 @@ function Categories({ activeCat, setActiveCat }: Props) {
             placeholder="Description"
             {...register("description")}
           />
-          {edit ? (
-            <button className="btn btn-outline-info mt-3">Update</button>
+          {edit !== 0 ? (
+            <>
+              <button className="btn btn-outline-info mt-3">Update</button>
+              <button
+                onClick={() => {
+                  setEdit(0);
+                  reset();
+                  setSelectImage(null);
+                }}
+                className="btn btn-outline-danger mt-3"
+              >
+                Cancel
+              </button>
+            </>
           ) : (
             <button className="btn btn-outline-primary mt-3">Create</button>
           )}
@@ -134,67 +193,71 @@ function Categories({ activeCat, setActiveCat }: Props) {
           <div className="list-categories-title">
             <span>List Categories:</span>
             <span>
-              <AiOutlineDelete
-                className="cat-action-delete"
-                onClick={handleClickDel}
-              />
+              {select.length > 0 && (
+                <AiOutlineDelete
+                  className="cat-action-delete"
+                  onClick={handleClickDel}
+                />
+              )}
             </span>
           </div>
-          <Table striped bordered hover className="list-categories-table">
-            <thead>
-              <tr>
-                <th>
-                  <input type="checkbox" onChange={() => setActive(!active)} />
-                </th>
-                <th>id</th>
-                <th>Title</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories &&
-                categories.map((cat: any, idx: number) => {
-                  return (
-                    <tr key={idx}>
-                      <td>
-                        <input
-                          type="checkbox"
-                          value={cat.id}
-                          checked={select.includes(cat.id)}
-                          onChange={handleSelect}
-                        />
-                      </td>
-                      <td>{cat.id}</td>
-                      <td>{cat.title}</td>
-                      <td>
-                        {edit ? (
-                          <span
-                            className="cat-action-cancel"
-                            onClick={() => {
-                              setEdit(false);
-                              reset();
-                            }}
-                          >
-                            <AiOutlineCloseCircle />
-                          </span>
-                        ) : (
+          <div className="list-categories-table">
+            <Table
+              striped
+              bordered
+              hover
+              className="list-categories-table-data"
+            >
+              <thead>
+                <tr>
+                  <th>
+                    <input
+                      type="checkbox"
+                      onChange={() => setActive(!active)}
+                    />
+                  </th>
+                  <th>id</th>
+                  <th>Title</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {categories &&
+                  categories.map((cat: any, idx: number) => {
+                    return (
+                      <tr key={idx}>
+                        <td>
+                          <input
+                            type="checkbox"
+                            value={cat.id}
+                            checked={select.includes(cat.id)}
+                            onChange={handleSelect}
+                          />
+                        </td>
+                        <td>{cat.id}</td>
+                        <td>{cat.title}</td>
+                        <td>
                           <span
                             className="cat-action-edit"
                             onClick={() => {
+                              setSelectImage((prev: any) => ({
+                                ...prev,
+                                url: cat.image,
+                              }));
                               setValue("title", cat.title);
                               setValue("description", cat.description),
-                                setEdit(true);
+                                setEdit(cat.id);
                             }}
                           >
                             <AiOutlineEdit />
                           </span>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </Table>
+                        </td>
+                      </tr>
+                    );
+                  })}
+              </tbody>
+            </Table>
+          </div>
         </div>
       </Modal.Body>
     </Modal>

@@ -2,6 +2,9 @@ import { axiosApi } from "@/libs/fetchData";
 import dynamic from "next/dynamic";
 import React, { useState, lazy, Suspense, useEffect } from "react";
 import { MdEditNote } from "react-icons/md";
+import { Image } from "../../components/ImagesManage";
+import { useSelector } from "react-redux";
+import { Slugify } from "@/libs/helpData";
 const Editor = dynamic(() => import("../../components/Ckeditor"), {
   ssr: false,
 });
@@ -10,18 +13,17 @@ const CategoriesManager = lazy(
   () => import("../../components/CategoriesManage")
 );
 function Write() {
-  const [catId, setCatId] = useState<number | null>();
+  const { userLogin } = useSelector((state: any) => state.user);
   const [categories, setCategories] = useState([]);
   const [activeCat, setActiveCat] = useState(false);
   const [show, setShow] = useState(false);
-  const [selectImage, setSelectImage] = useState<{} | null>();
+  const [selectImage, setSelectImage] = useState<Image | null>();
 
   const [content, setContent] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
+  const [catId, setCatId] = useState<string[]>([]);
   const [valueInput, setValueInput] = useState({
     title: "",
     description: "",
-    category: "",
   });
   useEffect(() => {
     axiosApi
@@ -33,35 +35,34 @@ function Write() {
     const { name, value, checked } = e.target;
     setValueInput((prevState) => ({ ...prevState, [name]: value }));
     if (checked) {
-      setTags((prev) => [...prev, value]);
+      setCatId((prev) => [...prev, value]);
     } else if (!checked) {
-      let tagArr = tags.filter((val) => val !== value);
-      setTags([...tagArr]);
+      let catArray = catId.filter((val) => val !== value);
+      setCatId([...catArray]);
     }
   };
-  const handlePost = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlePost = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    isDraft: number
+  ) => {
     e.preventDefault();
+    const url = Slugify(valueInput.title);
     const post = {
       content,
-      tags,
-      category: valueInput.category,
       title: valueInput.title,
       description: valueInput.description,
-      isDraft: false,
+      author: userLogin.id,
+      image: selectImage?.id,
+      isDraft,
+      catId,
+      url,
     };
-    console.log(post);
-  };
-  const handlePostDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const post = {
-      content,
-      tags,
-      category: valueInput.category,
-      title: valueInput.title,
-      description: valueInput.description,
-      isDraft: true,
-    };
-    console.log(post);
+    try {
+      const res = await axiosApi.post("posts/create", post);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="write-container">
@@ -102,12 +103,7 @@ function Write() {
             name="title"
             onChange={handleChange}
           />
-          <input
-            type="text"
-            placeholder="Url"
-            name="url"
-            onChange={handleChange}
-          />
+
           <textarea
             placeholder="Description"
             name="description"
@@ -119,39 +115,6 @@ function Write() {
         </div>
         <div className="form-write-right">
           <div className="form-write-right-option">
-            <div className="form-write-right-option-tags">
-              <label>Tags</label>
-              <div className="tags-item">
-                <input
-                  type="checkbox"
-                  id="people"
-                  name="tags"
-                  value="people"
-                  onChange={handleChange}
-                />
-                  <label>People</label>
-              </div>
-              <div className="tags-item">
-                <input
-                  type="checkbox"
-                  id="story"
-                  name="tags"
-                  value="story"
-                  onChange={handleChange}
-                />
-                 <label>Story</label>
-              </div>
-              <div className="tags-item">
-                <input
-                  type="checkbox"
-                  id="review"
-                  name="tags"
-                  value="review"
-                  onChange={handleChange}
-                />
-                  <label>Review</label>
-              </div>
-            </div>
             <div className="form-write-right-option-cat">
               <div className="cat-items">
                 <span>Categories</span>
@@ -185,8 +148,8 @@ function Write() {
               <span>Upload image</span>
             </div>
             <div className="form-write-right-action__submit">
-              <button onClick={handlePostDraft}>Save as draft</button>
-              <button onClick={handlePost}>Post</button>
+              <button onClick={(e) => handlePost(e, 1)}>Save as draft</button>
+              <button onClick={(e) => handlePost(e, 0)}>Post</button>
             </div>
           </div>
         </div>

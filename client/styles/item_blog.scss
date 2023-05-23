@@ -33,6 +33,8 @@
     display: flex;
     justify-content: space-between;
     .item-blog-title {
+      text-decoration: none;
+      color: black;
       position: relative;
       font-weight: bold;
       font-size: 24px;
