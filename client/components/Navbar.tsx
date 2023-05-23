@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
-import { UserType } from "@/pages/register";
 import { useDispatch, useSelector } from "react-redux";
 import { getRefresh } from "@/stores/refreshReducer";
 function Navbar() {
@@ -31,19 +30,18 @@ function Navbar() {
         </div>
         <ul className={"navbar-blog-menu-items " + (isActive ? "active" : "")}>
           <li className="item-menu">
-            <Link href="/demos">Demos</Link>
-          </li>
-          <li className="item-menu">
-            <Link href="/style">Style Guide</Link>
-          </li>
-          <li className="item-menu">
-            <Link href="/tag">Tag</Link>
-          </li>
-          <li className="item-menu">
             <span className="item-menu__search">
               Search <CiSearch />
             </span>
           </li>
+          <li className="item-menu">
+            <Link href="/blogs">Blogs</Link>
+          </li>
+
+          <li className="item-menu">
+            <Link href="/categories">Categories</Link>
+          </li>
+
           {userLogin?.id ? (
             <li className="item-menu">
               <Link href="/profile">

@@ -1,14 +1,14 @@
 import { db } from "../../configs/db";
 import { ImageType } from "../helpers/type";
 
-export const findImages = ({ id, uploadBy }: ImageType, idImage: string | null) => {
+export const findImages = ({ id, uploadBy }: ImageType, ids: string | null) => {
     let q = "SELECT id,url,alt,uploadBy FROM images order by createdAt DESC";
     let VALUES = [id, uploadBy] as any
     if (id || uploadBy) {
         q += " WHERE id = ? OR uploadBy = ?"
     } else if (id && uploadBy) {
         q += " WHERE id = ? AND uploadBy = ?"
-    } else if (idImage) { q = 'SELECT id,url,alt,uploadBy FROM images  WHERE id IN (?)', VALUES = idImage }
+    } else if (ids) { q = 'SELECT id,url,alt,uploadBy FROM images  WHERE id IN (?)', VALUES = ids }
 
     return new Promise((resolve, rejects) => {
         db.query(q, [VALUES], (err, data) => {

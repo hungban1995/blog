@@ -1,8 +1,31 @@
-import ItemBlog from "@/components/ItemBlog";
+import CategoryItem from "@/components/CategoryItem";
+import ItemPost from "@/components/ItemPost";
 import SlickSlide from "@/components/Slide";
+import { axiosApi } from "@/libs/fetchData";
 import Head from "next/head";
-
+import { useEffect, useState } from "react";
+type post = {
+  title: string;
+  url: string;
+  image: string;
+  description: string;
+  content: string | TrustedHTML;
+  author: string;
+  createdAt: Date;
+};
 export default function Home() {
+  const [categories, setCategories] = useState<any[]>();
+  const [posts, setPosts] = useState<post[]>([]);
+  useEffect(() => {
+    const getCats = axiosApi.get("categories/get-all");
+    const getPosts = axiosApi.get("posts/get-all");
+    Promise.all([getCats, getPosts])
+      .then((data) => {
+        setCategories(data[0].data.categories);
+        setPosts(data[1].data.posts);
+      })
+      .catch((err) => console.log(err));
+  }, []);
   return (
     <>
       <Head>
@@ -24,28 +47,22 @@ export default function Home() {
         <div className="home-recent-blog">
           <h1>See what we’ve written lately</h1>
           <div className="home-recent-blog-items">
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
+            {posts?.length > 0 &&
+              posts?.map<any>((post: post, idx: number) => {
+                return <ItemPost key={idx} post={post} />;
+              })}
           </div>
           <div className="home-recent-blog-action">
             <span>Load more</span>
           </div>
         </div>
-        <div className="home-recommend-blog">
-          <h1>Recommended</h1>
-          <div className="home-recommend-blog-items">
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
-            <ItemBlog />
+        <div className="home-category-list">
+          <h1>Category</h1>
+          <div className="home-category-list-items">
+            {categories &&
+              categories.map((cat: any, idx: number) => {
+                return <CategoryItem category={cat} key={idx} />;
+              })}
           </div>
         </div>
       </div>

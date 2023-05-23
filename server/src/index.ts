@@ -5,7 +5,7 @@ import parseConfig from './configs/parser.config';
 import { catchError } from './api/helpers/type';
 import * as dotenv from "dotenv"
 import corsConfig from './configs/cors.config';
-import postsRouter from './api/routers/posts';
+import postsRouter from './api/routers/posts.router';
 import imagesRouter from './api/routers/images.router';
 import viewEngineConfig from './configs/viewEngine.config';
 import categoriesRouter from './api/routers/categories.router';

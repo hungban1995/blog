@@ -60,7 +60,9 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
   //delete image
   const handleDelete = async () => {
     try {
-      await axiosApi.post("images/delete", { ids: choose });
+      let newData: number[] = [];
+      choose.forEach((item: Image) => newData.push(item.id));
+      await axiosApi.delete("images/delete", { data: newData });
       setRefresh((f) => f + 1);
     } catch (error) {
       console.log(error);
@@ -72,8 +74,8 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
         <Modal.Title>Images View</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="image">
-          <div className="image-upload">
+        <div className="image-manager">
+          <div className="image-manager-upload">
             <BiUpload className="image-upload-icon" />
 
             <input
@@ -87,7 +89,8 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
               return (
                 <div
                   className={
-                    "image-item " + (choose.includes(item) ? "active" : "")
+                    "image-manager-item " +
+                    (choose.includes(item) ? "active" : "")
                   }
                   key={idx}
                   onClick={() => handleChooseImage(item)}

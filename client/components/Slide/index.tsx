@@ -1,5 +1,5 @@
 import Slider from "react-slick";
-import ItemBlog from "../ItemBlog";
+import ItemPost from "../ItemPost";
 
 const settings = {
   dots: true,
@@ -38,11 +38,11 @@ const settings = {
 function SlickSlide() {
   return (
     <Slider {...settings}>
-      <ItemBlog />
-      <ItemBlog />
-      <ItemBlog />
-      <ItemBlog />
-      <ItemBlog />
+      <ItemPost />
+      <ItemPost />
+      <ItemPost />
+      <ItemPost />
+      <ItemPost />
     </Slider>
   );
 }

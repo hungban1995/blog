@@ -9,7 +9,16 @@ const axiosApi = axios.create({
 // REQUEST
 axiosApi.interceptors.request.use(
     (config) => {
-        const accessToken = window.localStorage.getItem('accessToken');
+
+        let accessToken;
+        if (
+            typeof window !== "undefined" &&
+            localStorage &&
+            window.localStorage.getItem("accessToken")
+        ) {
+            accessToken = localStorage.getItem("accessToken")
+        }
+
         if (accessToken) {
             config.headers['Authorization'] = accessToken;
         }

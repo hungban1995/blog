@@ -9,12 +9,12 @@ export const upload: functionType = async (req, res, next) => {
         const filename = req.file?.filename as string
         const url = `${path}/${filename}`
         const uploadBy: number = req.body.user
-        const image = {
+        const imageUpload = {
             url,
             uploadBy
         }
-        await service.upload(image)
-        res.status(200).json('Upload image success!')
+        await service.upload(imageUpload)
+        res.status(200).json({ success: true, message: 'Upload image success!', url })
     } catch (err) {
         next(err)
     }
@@ -43,7 +43,7 @@ export const getId: functionType = async (req, res, next) => {
 }
 export const deleteImage: functionType = async (req, res, next) => {
     try {
-        const { ids } = req.body
+        const ids = req.body
         const images: any = await service.findImages({}, ids)
         if (images.length === 0) return next({ status: 404, message: 'Image not found!' })
         const accessToken = req.headers.authorization as string
