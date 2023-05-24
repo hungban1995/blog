@@ -5,6 +5,9 @@ import { MdEditNote } from "react-icons/md";
 import { Image } from "../../components/ImagesManage";
 import { useSelector } from "react-redux";
 import { Slugify } from "@/libs/helpData";
+import { TCategory } from "@/components/CategoryItem";
+import { IMG_URL } from "@/constant";
+import images from "@/images";
 const Editor = dynamic(() => import("../../components/Ckeditor"), {
   ssr: false,
 });
@@ -14,7 +17,7 @@ const CategoriesManager = lazy(
 );
 function Write() {
   const { userLogin } = useSelector((state: any) => state.user);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<TCategory[]>([]);
   const [activeCat, setActiveCat] = useState(false);
   const [show, setShow] = useState(false);
   const [selectImage, setSelectImage] = useState<Image | null>();
@@ -124,12 +127,12 @@ function Write() {
                 />
               </div>
               {categories &&
-                categories.map((cat: any, idx: number) => {
+                categories.map((cat: TCategory, idx: number) => {
                   return (
                     <div key={idx} className="cat-item">
                       <input
                         type="checkbox"
-                        id={cat.id}
+                        id={String(cat.id)}
                         name="category"
                         value={cat.id}
                         onChange={handleChange}
@@ -145,7 +148,16 @@ function Write() {
               className="form-write-right-action__upload"
               onClick={() => setShow(true)}
             >
-              <span>Upload image</span>
+              <img
+                className="image-post-view"
+                src={
+                  selectImage
+                    ? `${IMG_URL}/${selectImage?.url}`
+                    : "https://cdn.shopify.com/s/files/1/0095/1205/8985/files/BLANK_INSIDE-min.jpeg"
+                }
+                alt="image-post-view"
+              />
+              {/* <span className="image-view-action">Upload image</span> */}
             </div>
             <div className="form-write-right-action__submit">
               <button onClick={(e) => handlePost(e, 1)}>Save as draft</button>

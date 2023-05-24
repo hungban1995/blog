@@ -1,0 +1,22 @@
+.category-item-card {
+  margin: 10px;
+  border: none;
+  .category-item-card__img {
+    width: 200px;
+    height: 180px;
+    margin: auto;
+    border-radius: 5px;
+    object-fit: cover;
+  }
+  a {
+    text-decoration: none;
+    padding: 5px 10px;
+    font-weight: bold;
+    color: black;
+    &:hover {
+      background-color: lightcoral;
+      color: white;
+      border-radius: 5px;
+    }
+  }
+}

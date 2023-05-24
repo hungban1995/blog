@@ -26,10 +26,10 @@ export const createPost: functionType = async (req, res, next) => {
 }
 export const getAll: functionType = async (req, res, next) => {
     try {
-        const posts: any = await services.getAll()
-        // posts.forEach((post: any) => {
-        //     post.category_array = post.categories_list.split(",")
-        // })
+        const { page } = req.query
+        const limit = 5;
+        const offset = (Number(page) - 1) * limit;
+        const posts: any = await services.getAll(limit, offset)
         res.status(200).json({ success: true, message: 'Get posts success!', posts })
     } catch (error) {
         next(error)

@@ -38,7 +38,7 @@ export const updateCat = (category: any, id: number) => {
     Object.keys(category).forEach((item: any) => {
         if (!category[item]) delete category[item]
     })
-    const q = 'UPDATE  categories SET  ? WHERE `id` = ?'
+    const q = 'UPDATE  categories SET  ? WHERE id = ?'
     return new Promise((resolve, reject) => {
         db.query(q, [category, id], (err, data) => {
             if (err) reject(err)

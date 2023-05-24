@@ -1,10 +1,11 @@
 import CategoryItem from "@/components/CategoryItem";
-import ItemPost from "@/components/ItemPost";
+import LoadMoreData from "@/components/LoadMoreData";
 import SlickSlide from "@/components/Slide";
 import { axiosApi } from "@/libs/fetchData";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-type post = {
+export type post = {
+  id: number;
   title: string;
   url: string;
   image: string;
@@ -12,17 +13,21 @@ type post = {
   content: string | TrustedHTML;
   author: string;
   createdAt: Date;
+  catList: string;
 };
 export default function Home() {
   const [categories, setCategories] = useState<any[]>();
-  const [posts, setPosts] = useState<post[]>([]);
+  const [postsSlide, setPostsSlide] = useState<post[]>([]);
+
   useEffect(() => {
     const getCats = axiosApi.get("categories/get-all");
-    const getPosts = axiosApi.get("posts/get-all");
-    Promise.all([getCats, getPosts])
-      .then((data) => {
-        setCategories(data[0].data.categories);
-        setPosts(data[1].data.posts);
+    const getPostsSlide = axiosApi.get("posts/get-all?page=1");
+
+    Promise.all([getCats, getPostsSlide])
+      .then((res) => {
+        setCategories(res[0].data.categories);
+
+        setPostsSlide(res[1].data.posts);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -42,20 +47,9 @@ export default function Home() {
         </div>
         <div className="home-featured-blog">
           <h1>Get started with our best stories</h1>
-          <SlickSlide />
+          <SlickSlide postsSlide={postsSlide} />
         </div>
-        <div className="home-recent-blog">
-          <h1>See what we’ve written lately</h1>
-          <div className="home-recent-blog-items">
-            {posts?.length > 0 &&
-              posts?.map<any>((post: post, idx: number) => {
-                return <ItemPost key={idx} post={post} />;
-              })}
-          </div>
-          <div className="home-recent-blog-action">
-            <span>Load more</span>
-          </div>
-        </div>
+        <LoadMoreData />
         <div className="home-category-list">
           <h1>Category</h1>
           <div className="home-category-list-items">
