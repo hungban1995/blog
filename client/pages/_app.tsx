@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 
 import stores from "../stores";
 import NotifiCation from "@/components/Notification";
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Provider store={stores}>

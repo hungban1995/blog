@@ -33,7 +33,7 @@ export const getAll: functionType = async (req, res, next) => {
 export const getId: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
-        const images: any = await service.findImages({ id: Number(id) }, null)
+        const images: any = await service.findImages({ id: id }, null)
         if (images.length === 0) return next({ status: 404, message: 'Image not found!' })
         res.status(200).json({ success: true, message: 'Get images success!', images: images[0] })
 

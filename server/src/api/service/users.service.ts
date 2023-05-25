@@ -37,7 +37,7 @@ export const update = (user: UserType) => {
         })
     })
 }
-export const deleteUser = (id: number) => {
+export const deleteUser = (id: string) => {
     const q = 'DELETE FROM users WHERE id = ?'
     return new Promise((resolve, rejects) => {
         db.query(q, id, (err, data) => {

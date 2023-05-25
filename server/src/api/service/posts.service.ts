@@ -26,7 +26,7 @@ export const getAll = (limit: number, offset: number) => {
     })
 }
 
-export const getPostByCat = (id: number) => {
+export const getPostByCat = (id: string) => {
     const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.description,images.url AS image, users.username AS author ' +
         ' FROM posts ' +
         ' LEFT JOIN images ON posts.image = images.id' +
@@ -61,7 +61,7 @@ export const getByUrl = (url: string) => {
     })
 }
 
-export const getPostId = (id: number) => {
+export const getPostId = (id: string) => {
     const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.content,posts.description,images.url AS image, users.username AS author, ' +
         ' GROUP_CONCAT(categories.id) AS catList' +
         ' FROM posts' +
@@ -77,8 +77,11 @@ export const getPostId = (id: number) => {
         })
     })
 }
-export const updatePost = (id: number, post: any) => {
-    const q = ''
+export const updatePost = (id: string, post: any) => {
+    Object.keys(post).forEach((key: any) => {
+        if (!post[key]) delete post[key]
+    })
+    const q = 'UPDATE posts SET ? WHERE id=?'
     return new Promise((resolve, reject) => {
         db.query(q, [post, id], (err, data) => {
             if (err) reject(err)

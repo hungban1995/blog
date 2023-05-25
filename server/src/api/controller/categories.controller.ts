@@ -28,7 +28,7 @@ export const getAll: functionType = async (req, res, next) => {
 export const getId: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
-        const category: any = await service.getOneCat(Number(id))
+        const category: any = await service.getOneCat(id)
         res.status(200).json({ success: true, message: 'Get categories success!', category })
     } catch (error) {
         next(error)
@@ -50,13 +50,13 @@ export const updateCat: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
         const catUpdate = req.body
-        const category: any = await service.getOneCat(Number(id))
+        const category: any = await service.getOneCat(id)
         const accessToken = req.headers.authorization as string
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
         if (decode.role !== 'admin' && decode.id !== category[0].author) {
             return next({ status: 403, message: "You don't have permission to update the category!" });
         }
-        await service.updateCat(catUpdate, Number(id))
+        await service.updateCat(catUpdate, id)
         res.status(200).json({ success: true, message: 'Update category success!' })
     } catch (error) {
         next(error)

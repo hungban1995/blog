@@ -29,7 +29,7 @@ function Edit() {
   const [show, setShow] = useState(false);
   const [selectImage, setSelectImage] = useState<Image | null>();
   const [content, setContent] = useState("");
-  const [catId, setCatId] = useState<string[]>([]);
+  const [catIds, setCatIds] = useState<string[]>([]);
   const [valueInput, setValueInput] = useState({
     title: "",
     description: "",
@@ -41,7 +41,7 @@ function Edit() {
         .get("posts/get-id/" + id)
         .then((res) => {
           setPost(res.data.post);
-          setCatId(res.data.post.catList.split(","));
+          setCatIds(res.data.post.catList.split(","));
         })
         .catch((err) => console.log(err));
     }
@@ -59,48 +59,14 @@ function Edit() {
     }
   }, [selectImage]);
 
-  const handleCreate = async (data: any) => {
-    try {
-      const res = await axiosApi.post("posts/create", data);
-      dispatch(
-        getNotify({
-          show: true,
-          status: "success",
-          message: res.data.message,
-        })
-      );
-    } catch (error: any) {
-      dispatch(
-        getNotify({
-          show: true,
-          status: "error",
-          message: error.response.data.message,
-        })
-      );
-    }
-  };
-  const handleEdit = async (id: number, data: any) => {
-    try {
-      const res = await axiosApi.post("posts/update/" + id, data);
-    } catch (error: any) {
-      dispatch(
-        getNotify({
-          show: true,
-          status: "error",
-          message: error.response.data.message,
-        })
-      );
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, checked } = e.target;
     setValueInput((prevState) => ({ ...prevState, [name]: value }));
     if (checked) {
-      setCatId((prev) => [...prev, value]);
+      setCatIds((prev) => [...prev, value]);
     } else if (!checked) {
-      let catArray = catId.filter((val) => val !== value);
-      setCatId([...catArray]);
+      let catArray = catIds.filter((val) => val !== value);
+      setCatIds(catArray);
     }
   };
   const handlePost = async (
@@ -116,15 +82,35 @@ function Edit() {
       author: userLogin.id,
       image: selectImage?.id,
       isDraft,
-      catId,
+      catIds,
       url,
     };
-    if (post?.id) {
-      await handleEdit(post.id, data);
-    } else {
-      await handleCreate(data);
+    try {
+      let res: any;
+      if (post?.id) {
+        res = await axiosApi.put("posts/update/" + post?.id, data);
+      } else {
+        res = await axiosApi.post("posts/create", data);
+      }
+      dispatch(
+        getNotify({
+          show: true,
+          status: "success",
+          message: res.data.message,
+        })
+      );
+    } catch (error: any) {
+      console.log(error);
+      dispatch(
+        getNotify({
+          show: true,
+          status: "error",
+          message: error.response.data.message,
+        })
+      );
     }
   };
+
   return (
     <div className="write-container">
       {show && (
@@ -156,7 +142,7 @@ function Edit() {
           />
         </Suspense>
       )}
-      <h1>Create Post</h1>
+      {post?.id ? <h1>Edit Post</h1> : <h1>Create Post</h1>}
       <form className="form-write">
         <div className="form-write-left">
           <input
@@ -166,7 +152,6 @@ function Edit() {
             onChange={handleChange}
             defaultValue={post ? post.title : ""}
           />
-
           <textarea
             defaultValue={post ? post.description : ""}
             placeholder="Description"
@@ -196,12 +181,9 @@ function Edit() {
                     <div key={idx} className="cat-item">
                       <input
                         type="checkbox"
-                        id={String(cat.id)}
                         name="category"
-                        value={cat.id}
-                        defaultChecked={post?.catList
-                          .split(",")
-                          .includes(String(cat.id))}
+                        value={cat.id.toString()}
+                        checked={catIds.includes(cat.id.toString())}
                         onChange={handleChange}
                       />
                         <label>{cat.title}</label>

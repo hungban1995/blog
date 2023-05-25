@@ -6,7 +6,7 @@ const postsRouter = async (app: express.Express) => {
     router.post('/create', controller.createPost)
     router.get("/get-all", controller.getAll);
     router.get("/get-id/:id", controller.getPostId);
-    router.get("/update/:id", controller.updatePost);
+    router.put("/update/:id", controller.updatePost);
 
     router.get("/get-by-url/:url", controller.getByUrl);
 
