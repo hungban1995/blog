@@ -11,6 +11,7 @@ import { IMG_URL } from "@/constant";
 import images from "@/images";
 import { useDispatch } from "react-redux";
 import { getNotify } from "@/stores/notificationReducer";
+import { TCategory } from "../CategoryItem";
 interface Props {
   activeCat: boolean;
   setActiveCat: (activeCat: boolean) => void;
@@ -28,7 +29,7 @@ function Categories({ activeCat, setActiveCat }: Props) {
   const [select, setSelect] = useState<number[]>([]);
   const [show, setShow] = useState(false);
   const [active, setActive] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<TCategory[]>([]);
   const [edit, setEdit] = useState(0);
   const [selectImage, setSelectImage] = useState<Image | null>();
   const [refresh, setRefresh] = useState(0);
@@ -223,7 +224,7 @@ function Categories({ activeCat, setActiveCat }: Props) {
               </thead>
               <tbody>
                 {categories &&
-                  categories.map((cat: any, idx: number) => {
+                  categories.map((cat: TCategory, idx: number) => {
                     return (
                       <tr key={idx}>
                         <td>

@@ -2,9 +2,11 @@ import { IMG_URL } from "@/constant";
 import { axiosApi } from "@/libs/fetchData";
 import moment from "moment";
 import Head from "next/head";
+import Link from "next/link";
 import { MdDelete, MdEdit } from "react-icons/md";
 export interface Props {
   post: {
+    id: number;
     title: string;
     url: string;
     image: string;
@@ -12,9 +14,12 @@ export interface Props {
     content: string | TrustedHTML;
     author: string;
     createdAt: Date;
+    catList: string;
   };
 }
 export default function Post({ post }: Props) {
+  console.log(post);
+
   return (
     <>
       <Head>
@@ -27,9 +32,16 @@ export default function Post({ post }: Props) {
         <div className="single-header">
           <div className="single-header-content">
             <div className="single-header-content-tag">
-              <span className="single-header-content-tag__item">tag1</span>
-              <span className="single-header-content-tag__item">tag1</span>
-              <span className="single-header-content-tag__item">tag1</span>
+              {post?.catList.length > 0 &&
+                post?.catList.split(",").map((item: string, idx) => {
+                  return (
+                    <span key={idx} className="single-header-content-tag__item">
+                      <Link href={`categories/${item.toLowerCase()}`}>
+                        {item}
+                      </Link>
+                    </span>
+                  );
+                })}
             </div>
             <h1 className="single-header-content-title">{post?.title}</h1>
             <p>{post?.description}</p>

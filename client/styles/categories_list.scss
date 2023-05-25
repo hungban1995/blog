@@ -12,22 +12,10 @@
 .categories-page-list {
   border-top: 1px solid rgba(128, 128, 128, 0.501);
   margin: 20px 0;
-
   .categories-page-list__item {
     padding-top: 10px;
     display: grid;
     grid-template-columns: 24.25% 24.25% 24.25% 24.25%;
     gap: 1%;
-    a {
-      text-decoration: none;
-      padding: 5px 10px;
-      font-weight: bold;
-      color: black;
-      &:hover {
-        background-color: lightcoral;
-        color: white;
-        border-radius: 5px;
-      }
-    }
   }
 }

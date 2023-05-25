@@ -6,7 +6,6 @@ import { Props } from "@/pages/[slug]";
 
 function ItemPost({ post }: Props) {
   const route = useRouter();
-
   return (
     <div className="item-blog">
       <div
@@ -17,15 +16,14 @@ function ItemPost({ post }: Props) {
       </div>
       <div>
         <div className="item-blog-tag">
-          <span className="tag-item">
-            <Link href={"#"}>Tag1</Link>
-          </span>
-          <span className="tag-item">
-            <Link href={"#"}>Tag1</Link>
-          </span>
-          <span className="tag-item">
-            <Link href={"#"}>Tag1</Link>
-          </span>
+          {post?.catList &&
+            post?.catList.split(",").map((item: any, idx) => {
+              return (
+                <span key={idx} className="tag-item">
+                  <Link href={`categories/${item.toLowerCase()}`}>{item}</Link>
+                </span>
+              );
+            })}
         </div>
         <div className="item-blog-action">
           <Link href={`/${post?.url}`} className="item-blog-title">

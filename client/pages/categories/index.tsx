@@ -1,12 +1,10 @@
-import CategoryItem from "@/components/CategoryItem";
+import CategoryItem, { TCategory } from "@/components/CategoryItem";
 import { axiosApi } from "@/libs/fetchData";
-import axios from "axios";
 import Head from "next/head";
-import Link from "next/link";
 import React from "react";
 
 interface Props {
-  categories: any;
+  categories: TCategory[];
 }
 
 export default function Categories({ categories }: Props) {
@@ -31,7 +29,7 @@ export default function Categories({ categories }: Props) {
           <p style={{ fontWeight: "bold" }}>Explore our Categories</p>
           <div className="categories-page-list__item">
             {categories &&
-              categories.map((category: any, index: number) => {
+              categories.map((category: TCategory, index: number) => {
                 return <CategoryItem category={category} key={index} />;
               })}
           </div>

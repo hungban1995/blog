@@ -50,8 +50,21 @@
       .form-write-right-action {
         border: 1px solid rgba(128, 128, 128, 0.5);
         .form-write-right-action__upload {
+          text-align: center;
           margin: 10px;
           cursor: pointer;
+          position: relative;
+          .image-post-view {
+            padding: 10px;
+            margin: auto;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+          }
+          .image-view-action {
+            position: absolute;
+            left: 50%;
+          }
         }
         .form-write-right-action__submit {
           margin: 10px;

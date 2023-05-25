@@ -33,14 +33,16 @@
     display: flex;
     justify-content: space-between;
     .item-blog-title {
+      padding: 5px 0;
       text-decoration: none;
       color: black;
-      position: relative;
       font-weight: bold;
-      font-size: 24px;
-      max-width: 70%;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      font-size: 22px;
+      flex: 1;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
     .action-icon {
       background-color: lightcoral;

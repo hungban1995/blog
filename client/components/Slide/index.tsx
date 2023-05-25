@@ -1,5 +1,6 @@
 import Slider from "react-slick";
 import ItemPost from "../ItemPost";
+import { post } from "@/pages";
 
 const settings = {
   dots: true,
@@ -35,14 +36,16 @@ const settings = {
     },
   ],
 };
-function SlickSlide() {
+interface Props {
+  postsSlide: post[];
+}
+function SlickSlide({ postsSlide }: Props) {
   return (
     <Slider {...settings}>
-      <ItemPost />
-      <ItemPost />
-      <ItemPost />
-      <ItemPost />
-      <ItemPost />
+      {postsSlide.length > 0 &&
+        postsSlide.map((post: post, idx: number) => {
+          return <ItemPost post={post} key={idx} />;
+        })}
     </Slider>
   );
 }
