@@ -2,7 +2,6 @@ import { axiosApi } from "@/libs/fetchData";
 import { post } from "@/pages";
 import React, { useEffect, useState } from "react";
 import ItemPost from "../ItemPost";
-
 function LoadMoreData() {
   const [posts, setPosts] = useState<post[]>([]);
   const [page, setPage] = useState(1);
@@ -11,8 +10,8 @@ function LoadMoreData() {
     axiosApi
       .get(`posts/get-all?page=${page}`)
       .then((res) => {
-        setPosts([...posts, ...res.data.posts]);
         if (res.data.posts.length === 0) setHasMoreData(false);
+        setPosts([...posts, ...res.data.posts]);
       })
       .catch((err) => console.log(err));
   }, [page]);

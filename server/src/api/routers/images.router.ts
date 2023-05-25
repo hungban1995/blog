@@ -6,7 +6,6 @@ const imagesRouter = async (app: express.Express) => {
     router.post('/upload', upload, controller.upload)
     router.get("/get-all", controller.getAll);
     router.get("/get-id/:id", controller.getId);
-    // router.put('/update/:id', controller.update)
 
     router.delete('/delete', controller.deleteImage)
     return app.use("/api/images", router);

@@ -3,23 +3,16 @@ import { axiosApi } from "@/libs/fetchData";
 import moment from "moment";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { MdDelete, MdEdit } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { post } from "..";
 export interface Props {
-  post: {
-    id: number;
-    title: string;
-    url: string;
-    image: string;
-    description: string;
-    content: string | TrustedHTML;
-    author: string;
-    createdAt: Date;
-    catList: string;
-  };
+  post: post;
 }
 export default function Post({ post }: Props) {
-  console.log(post);
-
+  const { userLogin } = useSelector((state: any) => state.user);
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -59,8 +52,15 @@ export default function Post({ post }: Props) {
                 </div>
               </div>
               <div className="single-header-content-info__action">
-                <MdEdit className="action-icon" />
-                <MdDelete className="action-icon" />
+                {userLogin?.role === "admin" && (
+                  <>
+                    <MdEdit
+                      className="action-icon"
+                      onClick={() => router.push(`edit?id=${post.id}`)}
+                    />
+                    <MdDelete className="action-icon" />
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -85,15 +85,22 @@ export async function getServerSideProps({
     const url = params.slug as string;
     const response = await axiosApi.get("posts/get-by-url/" + url);
     const post = response.data.post;
+    if (!post)
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
     return {
       props: {
         post,
       },
     };
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    console.log(error.message);
     return {
-      props: {},
+      props: { error },
     };
   }
 }

@@ -27,7 +27,7 @@ function Layout({ children }: props) {
       } else dispatch(refreshLogin());
     };
     getUser();
-  }, [num, dispatch]);
+  }, [num]);
   const router = useRouter();
   if (router.pathname === "/login" || router.pathname === "/register")
     return (

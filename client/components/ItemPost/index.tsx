@@ -3,14 +3,18 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { IMG_URL } from "@/constant";
 import { Props } from "@/pages/[slug]";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 function ItemPost({ post }: Props) {
-  const route = useRouter();
+  const router = useRouter();
+  const { userLogin } = useSelector((state: any) => state.user);
+
   return (
     <div className="item-blog">
       <div
         className="item-blog__image"
-        onClick={() => route.push(`/${post?.url}`)}
+        onClick={() => router.push(`/${post?.url}`)}
       >
         <img alt="img-post" src={`${IMG_URL}/${post?.image}`} />
       </div>
@@ -29,10 +33,15 @@ function ItemPost({ post }: Props) {
           <Link href={`/${post?.url}`} className="item-blog-title">
             {post?.title}
           </Link>
-          <span>
-            <MdEdit className="action-icon" />
-            <MdDelete className="action-icon" />
-          </span>
+          {userLogin?.role === "admin" && (
+            <span>
+              <MdEdit
+                className="action-icon"
+                onClick={() => router.push(`edit?id=${post.id}`)}
+              />
+              <MdDelete className="action-icon" />
+            </span>
+          )}
         </div>
         <p className="item-blog-text">{post?.description}</p>
       </div>
