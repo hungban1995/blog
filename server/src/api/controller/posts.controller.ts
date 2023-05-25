@@ -38,13 +38,31 @@ export const getAll: functionType = async (req, res, next) => {
 export const getPostId: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
-        const post: any = services.getPostId(Number(id))
-        res.status(200).json({ success: true, message: 'Get post success!', post })
+        let post: any
+        if (id && id !== "undefined") {
+            post = await services.getPostId(Number(id))
+
+        }
+        return res.status(200).json({ success: true, message: 'Get post success!', post: post[0] })
 
     } catch (error) {
         next(error)
     }
 }
+
+
+export const updatePost: functionType = async (req, res, next) => {
+    try {
+        const { id } = req.params
+        const postUpdate = req.body
+        await services.updatePost(Number(id), postUpdate)
+        res.status(200).json({ success: true, message: 'Update post success!' })
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 export const getByCat: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
@@ -59,8 +77,8 @@ export const getByCat: functionType = async (req, res, next) => {
 export const getByUrl: functionType = async (req, res, next) => {
     try {
         const { url } = req.params
-        const posts: any = await services.getByUrl(url)
-        res.status(200).json({ success: true, message: 'Get post success!', post: posts[0] })
+        const post: any = await services.getByUrl(url)
+        res.status(200).json({ success: true, message: 'Get post success!', post: post[0] })
 
     } catch (error) {
         next(error)

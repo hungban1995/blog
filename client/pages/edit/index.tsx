@@ -1,13 +1,16 @@
+/* eslint-disable @next/next/no-img-element */
 import { axiosApi } from "@/libs/fetchData";
 import dynamic from "next/dynamic";
 import React, { useState, lazy, Suspense, useEffect } from "react";
 import { MdEditNote } from "react-icons/md";
 import { Image } from "../../components/ImagesManage";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Slugify } from "@/libs/helpData";
 import { TCategory } from "@/components/CategoryItem";
 import { IMG_URL } from "@/constant";
-import images from "@/images";
+import { post } from "..";
+import { useRouter } from "next/router";
+import { getNotify } from "@/stores/notificationReducer";
 const Editor = dynamic(() => import("../../components/Ckeditor"), {
   ssr: false,
 });
@@ -15,13 +18,16 @@ const ImagesManager = lazy(() => import("../../components/ImagesManage"));
 const CategoriesManager = lazy(
   () => import("../../components/CategoriesManage")
 );
-function Write() {
+
+function Edit() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [post, setPost] = useState<post>();
   const { userLogin } = useSelector((state: any) => state.user);
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [activeCat, setActiveCat] = useState(false);
   const [show, setShow] = useState(false);
   const [selectImage, setSelectImage] = useState<Image | null>();
-
   const [content, setContent] = useState("");
   const [catId, setCatId] = useState<string[]>([]);
   const [valueInput, setValueInput] = useState({
@@ -29,11 +35,64 @@ function Write() {
     description: "",
   });
   useEffect(() => {
+    const id = router.query.id;
+    if (id) {
+      axiosApi
+        .get("posts/get-id/" + id)
+        .then((res) => {
+          setPost(res.data.post);
+          setCatId(res.data.post.catList.split(","));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [router]);
+  useEffect(() => {
     axiosApi
       .get("categories/get-all")
       .then((res) => setCategories(res.data.categories))
       .catch((error) => console.log(error));
   }, []);
+
+  useEffect(() => {
+    if (selectImage?.url) {
+      setPost((prev: any) => ({ ...prev, image: selectImage.url }));
+    }
+  }, [selectImage]);
+
+  const handleCreate = async (data: any) => {
+    try {
+      const res = await axiosApi.post("posts/create", data);
+      dispatch(
+        getNotify({
+          show: true,
+          status: "success",
+          message: res.data.message,
+        })
+      );
+    } catch (error: any) {
+      dispatch(
+        getNotify({
+          show: true,
+          status: "error",
+          message: error.response.data.message,
+        })
+      );
+    }
+  };
+  const handleEdit = async (id: number, data: any) => {
+    try {
+      const res = await axiosApi.post("posts/update/" + id, data);
+    } catch (error: any) {
+      dispatch(
+        getNotify({
+          show: true,
+          status: "error",
+          message: error.response.data.message,
+        })
+      );
+    }
+  };
+
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, checked } = e.target;
     setValueInput((prevState) => ({ ...prevState, [name]: value }));
@@ -50,7 +109,7 @@ function Write() {
   ) => {
     e.preventDefault();
     const url = Slugify(valueInput.title);
-    const post = {
+    const data = {
       content,
       title: valueInput.title,
       description: valueInput.description,
@@ -60,11 +119,10 @@ function Write() {
       catId,
       url,
     };
-    try {
-      const res = await axiosApi.post("posts/create", post);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
+    if (post?.id) {
+      await handleEdit(post.id, data);
+    } else {
+      await handleCreate(data);
     }
   };
   return (
@@ -98,6 +156,7 @@ function Write() {
           />
         </Suspense>
       )}
+      <h1>Create Post</h1>
       <form className="form-write">
         <div className="form-write-left">
           <input
@@ -105,15 +164,20 @@ function Write() {
             placeholder="Title"
             name="title"
             onChange={handleChange}
+            defaultValue={post ? post.title : ""}
           />
 
           <textarea
+            defaultValue={post ? post.description : ""}
             placeholder="Description"
             name="description"
             onChange={handleChange}
           />
           <div>
-            <Editor value="" onChange={(data) => setContent(data)} />
+            <Editor
+              value={post ? post.content : ""}
+              onChange={(data) => setContent(data)}
+            />
           </div>
         </div>
         <div className="form-write-right">
@@ -135,6 +199,9 @@ function Write() {
                         id={String(cat.id)}
                         name="category"
                         value={cat.id}
+                        defaultChecked={post?.catList
+                          .split(",")
+                          .includes(String(cat.id))}
                         onChange={handleChange}
                       />
                         <label>{cat.title}</label>
@@ -151,13 +218,12 @@ function Write() {
               <img
                 className="image-post-view"
                 src={
-                  selectImage
-                    ? `${IMG_URL}/${selectImage?.url}`
+                  post
+                    ? `${IMG_URL}/${post.image}`
                     : "https://cdn.shopify.com/s/files/1/0095/1205/8985/files/BLANK_INSIDE-min.jpeg"
                 }
                 alt="image-post-view"
               />
-              {/* <span className="image-view-action">Upload image</span> */}
             </div>
             <div className="form-write-right-action__submit">
               <button onClick={(e) => handlePost(e, 1)}>Save as draft</button>
@@ -170,4 +236,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default Edit;

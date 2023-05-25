@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { getRefresh } from "@/stores/refreshReducer";
+import { refreshLogin } from "@/stores/userReducer";
 function Navbar() {
   const dispatch = useDispatch();
   const route = useRouter();
@@ -35,7 +36,7 @@ function Navbar() {
             </span>
           </li>
           <li className="item-menu">
-            <Link href="/blogs">Blogs</Link>
+            <Link href="/">Feature&apos;s</Link>
           </li>
 
           <li className="item-menu">
@@ -58,7 +59,7 @@ function Navbar() {
               >
                 Logout
               </span>
-              <Link href="/write">
+              <Link href="/edit">
                 <span className="item-menu__action write">Write</span>
               </Link>
             </li>

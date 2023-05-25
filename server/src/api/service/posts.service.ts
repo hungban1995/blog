@@ -62,9 +62,25 @@ export const getByUrl = (url: string) => {
 }
 
 export const getPostId = (id: number) => {
-    const q = 'SELECT * FROM posts WHERE id=? order by createdAt DESC'
+    const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.content,posts.description,images.url AS image, users.username AS author, ' +
+        ' GROUP_CONCAT(categories.id) AS catList' +
+        ' FROM posts' +
+        ' LEFT JOIN images ON posts.image = images.id LEFT JOIN users ON posts.author= users.id ' +
+        ' LEFT JOIN category_lookup ON posts.id = category_lookup.postId' +
+        '  LEFT JOIN categories ON category_lookup.categoryId = categories.id' +
+        ' WHERE posts.id = ?' +
+        '  GROUP BY posts.id'
     return new Promise((resolve, reject) => {
         db.query(q, [id], (err, data) => {
+            if (err) reject(err)
+            resolve(data)
+        })
+    })
+}
+export const updatePost = (id: number, post: any) => {
+    const q = ''
+    return new Promise((resolve, reject) => {
+        db.query(q, [post, id], (err, data) => {
             if (err) reject(err)
             resolve(data)
         })

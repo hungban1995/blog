@@ -10,7 +10,7 @@ export type post = {
   url: string;
   image: string;
   description: string;
-  content: string | TrustedHTML;
+  content: string;
   author: string;
   createdAt: Date;
   catList: string;
