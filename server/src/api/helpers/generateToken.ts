@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
 //create access token
-export const createAccessToken = (payload: { id: number, role: string }, secretKey: string) => {
+export const createAccessToken = (payload: { id: string, role: string }, secretKey: string) => {
     return new Promise((resolve, reject) => {
         jwt.sign(payload, secretKey, {
             expiresIn: "2d"
@@ -12,7 +12,7 @@ export const createAccessToken = (payload: { id: number, role: string }, secretK
     })
 };
 //create refresh token
-export const createRefreshToken = (payload: { id: number, role: string }, secretKey: string) => {
+export const createRefreshToken = (payload: { id: string, role: string }, secretKey: string) => {
     return new Promise((resolve, reject) => {
         jwt.sign(payload, secretKey, {
             expiresIn: "30d"

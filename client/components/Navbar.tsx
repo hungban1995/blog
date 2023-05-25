@@ -1,17 +1,18 @@
 import images from "../images";
 import { CiMenuBurger, CiSearch } from "react-icons/ci";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { getRefresh } from "@/stores/refreshReducer";
-import { refreshLogin } from "@/stores/userReducer";
+import { getUserLogin, refreshLogin } from "@/stores/userReducer";
+
 function Navbar() {
   const dispatch = useDispatch();
   const route = useRouter();
   const [isActive, setIsActive] = useState(false);
   const { userLogin } = useSelector((state: any) => state.user);
+
   return (
     <div className="navbar-blog">
       <div className="navbar-blog__Logo" onClick={() => route.push("/")}>
@@ -24,7 +25,7 @@ function Navbar() {
           </div>
           <div
             className="item-menu-mobile"
-            onClick={() => setIsActive((p) => !p)}
+            onClick={() => setIsActive(!isActive)}
           >
             <CiMenuBurger />
           </div>
@@ -38,11 +39,9 @@ function Navbar() {
           <li className="item-menu">
             <Link href="/">Feature&apos;s</Link>
           </li>
-
           <li className="item-menu">
             <Link href="/categories">Categories</Link>
           </li>
-
           {userLogin?.id ? (
             <li className="item-menu">
               <Link href="/profile">
@@ -54,7 +53,7 @@ function Navbar() {
                   localStorage.removeItem("userId");
                   localStorage.removeItem("refreshToken");
                   localStorage.removeItem("accessToken");
-                  dispatch(getRefresh());
+                  dispatch(refreshLogin());
                 }}
               >
                 Logout

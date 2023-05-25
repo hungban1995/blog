@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getNotify } from "@/stores/notificationReducer";
 import { object, string } from "yup";
 import { getRefresh } from "@/stores/refreshReducer";
+
 const userSchema = object({
   email: string().email().required(),
   password: string().required().min(6),
@@ -39,7 +40,7 @@ function Login() {
     try {
       const res = await axiosApi.post("users/login", value);
       localStorage.setItem("userId", JSON.stringify(res.data.user.id));
-      dispatch(getRefresh());
+      // dispatch(getRefresh());
       dispatch(
         getNotify({
           show: true,

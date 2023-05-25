@@ -1,6 +1,6 @@
 import { decodeType, functionType } from "../helpers/type";
 import { verifyToken } from "../middleware/auth";
-import { createCatLookup } from "../service/categoryLookup.service";
+import { createCatPost, deleteCatPost } from "../service/categoryLookup.service";
 import * as services from '../service/posts.service'
 
 export const createPost: functionType = async (req, res, next) => {
@@ -10,15 +10,11 @@ export const createPost: functionType = async (req, res, next) => {
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
         if (decode.role !== 'admin') return next({ status: 403, message: "You don't have permission create post!" })
         const createPost: any = await services.createPost(post)
-        const catId: number[] = post.catId
-        if (catId.length === 0) {
+        if (post.catIds.length === 0) {
             return next({ status: 404, message: "Need an category create post!" })
         }
         const postId = createPost.insertId
-        let i
-        for (i of catId) {
-            await createCatLookup(postId, i)
-        }
+        await createCatPost(postId, post.catIds)
         res.status(200).json({ success: true, message: 'Create post success!' })
     } catch (error) {
         next(error)
@@ -39,8 +35,8 @@ export const getPostId: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
         let post: any
-        if (id && id !== "undefined") {
-            post = await services.getPostId(Number(id))
+        if (id && id !== undefined) {
+            post = await services.getPostId(id)
 
         }
         return res.status(200).json({ success: true, message: 'Get post success!', post: post[0] })
@@ -55,7 +51,10 @@ export const updatePost: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
         const postUpdate = req.body
-        await services.updatePost(Number(id), postUpdate)
+        await deleteCatPost(id)
+        await createCatPost(id, postUpdate.catIds)
+        delete postUpdate.catIds
+        await services.updatePost(id, postUpdate)
         res.status(200).json({ success: true, message: 'Update post success!' })
 
     } catch (error) {
@@ -66,9 +65,8 @@ export const updatePost: functionType = async (req, res, next) => {
 export const getByCat: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
-        const posts: any = await services.getPostByCat(Number(id))
+        const posts: any = await services.getPostByCat(id)
         res.status(200).json({ success: true, message: 'Get post success!', posts })
-
     } catch (error) {
         next(error)
     }

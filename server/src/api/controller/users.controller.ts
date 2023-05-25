@@ -39,7 +39,7 @@ export const getId: functionType = async (req, res, next) => {
         const accessToken = req.headers.authorization as string
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
         if (decode.id.toString() !== id && decode.role !== 'admin') return next({ status: 403, message: "You don't have permission view this!" })
-        const user: any = await service.findUser({ id: Number(id) })
+        const user: any = await service.findUser({ id: id })
         if (user.length === 0) return next({ status: 404, message: 'User not found!' })
         const { password, createdAt, updatedAt, ...data } = user[0]
         res.status(200).json({ success: true, message: 'Get user success!', user: data })
@@ -54,7 +54,7 @@ export const update: functionType = async (req, res, next) => {
         const accessToken = req.headers.authorization as string
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
         if (decode.id.toString() !== id && decode.role !== 'admin') return next({ status: 403, message: "You don't have permission update this!" })
-        const user: any = await service.findUser({ id: Number(id) })
+        const user: any = await service.findUser({ id: id })
         if (user.length === 0) return next({ status: 404, message: 'User not found!' })
         if (req.body.password !== req.body.retypePassword) return next({ status: 404, message: 'Password do not match!' })
         if (req.body?.password) {
@@ -74,9 +74,9 @@ export const deleteUser: functionType = async (req, res, next) => {
         const accessToken = req.headers.authorization as string
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
         if (decode.id.toString() !== id && decode.role !== 'admin') return next({ status: 403, message: "You don't have permission delete this!" })
-        const user: any = await service.findUser({ id: Number(id) })
+        const user: any = await service.findUser({ id: id })
         if (user.length === 0) return next({ status: 404, message: 'User not found!' })
-        await service.deleteUser(Number(id))
+        await service.deleteUser(id)
         res.status(200).json({ success: true, message: "Delete user success!" })
     } catch (error) {
         next(error)

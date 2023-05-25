@@ -18,15 +18,12 @@ export type post = {
 export default function Home() {
   const [categories, setCategories] = useState<any[]>();
   const [postsSlide, setPostsSlide] = useState<post[]>([]);
-
   useEffect(() => {
     const getCats = axiosApi.get("categories/get-all");
     const getPostsSlide = axiosApi.get("posts/get-all?page=1");
-
     Promise.all([getCats, getPostsSlide])
       .then((res) => {
         setCategories(res[0].data.categories);
-
         setPostsSlide(res[1].data.posts);
       })
       .catch((err) => console.log(err));
