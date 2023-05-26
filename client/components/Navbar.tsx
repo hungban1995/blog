@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { refreshLogin } from "@/stores/userReducer";
 import { axiosApi } from "@/libs/fetchData";
 import { Debounce } from "@/libs/Deboundce";
+import SearchResults, { data } from "./SearchResults";
 
 function Navbar() {
   const dispatch = useDispatch();
@@ -15,9 +16,9 @@ function Navbar() {
   const [isActive, setIsActive] = useState(false);
   const { userLogin } = useSelector((state: any) => state.user);
   const [value, setValue] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<data[]>([]);
   const debounce = Debounce(value, 1000);
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!debounce) {
       setData([]);
@@ -27,11 +28,13 @@ function Navbar() {
       .get(`search?q=${debounce}`)
       .then((res) => {
         setData(res.data.data);
-        console.log(res);
+        setLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => setLoading(false));
   }, [debounce]);
-
+  useEffect(() => {
+    setValue("");
+  }, [route]);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
   };
@@ -44,11 +47,12 @@ function Navbar() {
         <div className="navbar-blog-menu-search">
           <input
             type="text"
+            value={value}
             placeholder="Search"
             className="search-input"
             onChange={handleChange}
           />
-          <CiSearch />
+          {value && <SearchResults data={data} loading={loading} />}
         </div>
         <div
           className="navbar-blog-action-collapse"
