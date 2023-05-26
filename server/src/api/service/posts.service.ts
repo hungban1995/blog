@@ -89,3 +89,14 @@ export const updatePost = (id: string, post: any) => {
         })
     })
 }
+
+export const deletePost = (id: string) => {
+
+    const q = 'DELETE FROM posts  WHERE id=?'
+    return new Promise((resolve, reject) => {
+        db.query(q, [id], (err, data) => {
+            if (err) reject(err)
+            resolve(data)
+        })
+    })
+}

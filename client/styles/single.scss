@@ -10,15 +10,15 @@
         display: flex;
         .single-header-content-tag__item {
           &:hover {
-            cursor: pointer;
-            background: gray;
+            background-color: gainsboro;
           }
           margin-right: 10px;
-          padding: 0 10px;
-          background-color: gainsboro;
+          background-color: rgb(239, 238, 240);
+          padding: 5px 10px;
           border-radius: 10px;
           a {
             text-decoration: none;
+            color: black;
           }
         }
       }

@@ -15,51 +15,54 @@
       object-fit: cover;
     }
   }
+
   .navbar-blog-menu {
-    .navbar-blog-menu-mobile {
+    display: flex;
+    .navbar-blog-menu-search {
+      margin: 5px;
+      padding: 5px;
+      background-color: gainsboro;
+      border-radius: 5px;
+    }
+    .navbar-blog-action-collapse {
       display: none;
     }
-    .navbar-blog-menu-items {
-      display: flex;
-      margin: 0;
-      padding: 0;
-      .item-menu {
-        box-sizing: border-box;
-        list-style: none;
-        margin: 5px;
-        padding: 5px;
-        .item-menu__action {
-          color: black;
-          margin: 5px;
-          padding: 5px;
-          cursor: pointer;
-          &:hover {
-            background-color: gainsboro;
-            border-radius: 10px;
+    .navbar-blog-menu-collapse {
+      margin: auto;
+      .navbar-blog-menu-items {
+        display: flex;
+        margin: 0;
+        padding: 0;
+        .item-menu {
+          box-sizing: border-box;
+          list-style: none;
+          .item-menu__action {
+            text-decoration: none;
+            padding: 5px;
+            margin: 5px;
+            color: black;
+            cursor: pointer;
+            &:hover {
+              background-color: gainsboro;
+              border-radius: 10px;
+            }
+            .item-menu__action-write {
+              background-color: lightblue;
+              border-radius: 10px;
+              padding: 5px;
+            }
           }
-          &.write {
-            background-color: lightblue;
-            border-radius: 10px;
-          }
-        }
-        a {
-          text-decoration: none;
-        }
-        .item-menu__search {
-          margin: 5px;
-          padding: 5px;
-          background-color: gainsboro;
-          border-radius: 5px;
-        }
-        .item-menu-join {
-          cursor: pointer;
-          background-color: black;
-          color: white;
-          margin: 5px;
-          padding: 5px;
-          border-radius: 5px;
-          &:hover {
-            background-color: lightgreen;
+
+          .item-menu-join {
+            cursor: pointer;
+            background-color: black;
+            color: white;
+            margin: 5px;
+            padding: 5px;
+            border-radius: 5px;
+            &:hover {
+              background-color: lightgreen;
+            }
           }
         }
       }

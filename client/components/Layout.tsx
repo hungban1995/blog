@@ -27,7 +27,6 @@ function Layout({ children }: Props) {
       dispatch(refreshLogin());
     }
   }, [num]);
-
   return (
     <>
       <NotifiCation />

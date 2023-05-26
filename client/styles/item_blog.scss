@@ -30,34 +30,14 @@
     }
   }
   .item-blog-action {
-    display: flex;
-    justify-content: space-between;
     .item-blog-title {
       padding: 5px 0;
       text-decoration: none;
       color: black;
       font-weight: bold;
       font-size: 22px;
-      flex: 1;
-
       &:hover {
         text-decoration: underline;
-      }
-    }
-    .action-icon {
-      background-color: lightcoral;
-      border-radius: 50%;
-      width: 30px;
-      height: 30px;
-      margin: 5px;
-      padding: 5px;
-      cursor: pointer;
-      transition: all 0.25ms ease-out;
-      &:hover {
-        transform: scale(1.2);
-      }
-      &:first-child {
-        background-color: lightblue;
       }
     }
   }

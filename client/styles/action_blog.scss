@@ -1,0 +1,22 @@
+.action-blog-view {
+  display: flex;
+  .action-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightcoral;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    padding: 5px;
+    cursor: pointer;
+    transition: all 0.25ms ease-out;
+    &:hover {
+      transform: scale(1.2);
+    }
+    &:first-child {
+      background-color: lightblue;
+    }
+  }
+}

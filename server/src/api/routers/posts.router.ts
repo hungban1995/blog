@@ -11,7 +11,7 @@ const postsRouter = async (app: express.Express) => {
     router.get("/get-by-url/:url", controller.getByUrl);
 
     router.get('/get-by-category/:id', controller.getByCat)
-    // router.delete('/delete/', controller.deleteUser)
+    router.delete('/delete/:id', controller.deletePost)
     return app.use("/api/posts", router);
 }
 export default postsRouter;

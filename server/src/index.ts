@@ -9,6 +9,7 @@ import postsRouter from './api/routers/posts.router';
 import imagesRouter from './api/routers/images.router';
 import viewEngineConfig from './configs/viewEngine.config';
 import categoriesRouter from './api/routers/categories.router';
+import searchRouter from './api/routers/search.router';
 dotenv.config()
 const port = 8080 || 5000
 const app: Express = express()
@@ -28,6 +29,7 @@ usersRouter(app)
 postsRouter(app)
 imagesRouter(app)
 categoriesRouter(app)
+searchRouter(app)
 app.get('/', (req, res, next) => {
     res.send('Server is on')
 })
