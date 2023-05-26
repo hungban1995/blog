@@ -3,16 +3,14 @@ import { axiosApi } from "@/libs/fetchData";
 import moment from "moment";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { MdDelete, MdEdit } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { post } from "..";
+import ActionPost from "@/components/ActionPost";
 export interface Props {
   post: post;
 }
 export default function Post({ post }: Props) {
   const { userLogin } = useSelector((state: any) => state.user);
-  const router = useRouter();
   return (
     <>
       <Head>
@@ -52,15 +50,7 @@ export default function Post({ post }: Props) {
                 </div>
               </div>
               <div className="single-header-content-info__action">
-                {userLogin?.role === "admin" && (
-                  <>
-                    <MdEdit
-                      className="action-icon"
-                      onClick={() => router.push(`edit?id=${post.id}`)}
-                    />
-                    <MdDelete className="action-icon" />
-                  </>
-                )}
+                {userLogin?.role === "admin" && <ActionPost id={post.id} />}
               </div>
             </div>
           </div>

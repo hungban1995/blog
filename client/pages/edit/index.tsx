@@ -22,7 +22,7 @@ const CategoriesManager = lazy(
 function Edit() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [post, setPost] = useState<post>();
+  const [post, setPost] = useState<post | null>();
   const { userLogin } = useSelector((state: any) => state.user);
   const [categories, setCategories] = useState<TCategory[]>([]);
   const [activeCat, setActiveCat] = useState(false);
@@ -30,6 +30,9 @@ function Edit() {
   const [selectImage, setSelectImage] = useState<Image | null>();
   const [content, setContent] = useState("");
   const [catIds, setCatIds] = useState<string[]>([]);
+  const [imageView, setImageView] = useState(
+    "https://cdn.shopify.com/s/files/1/0095/1205/8985/files/BLANK_INSIDE-min.jpeg"
+  );
   const [valueInput, setValueInput] = useState({
     title: "",
     description: "",
@@ -44,6 +47,12 @@ function Edit() {
           setCatIds(res.data.post.catList.split(","));
         })
         .catch((err) => console.log(err));
+    } else {
+      setPost(null);
+      setCatIds([]);
+      setImageView(
+        "https://cdn.shopify.com/s/files/1/0095/1205/8985/files/BLANK_INSIDE-min.jpeg"
+      );
     }
   }, [router]);
   useEffect(() => {
@@ -55,9 +64,12 @@ function Edit() {
 
   useEffect(() => {
     if (selectImage?.url) {
-      setPost((prev: any) => ({ ...prev, image: selectImage.url }));
+      setImageView(`${IMG_URL}/${selectImage.url}`);
     }
-  }, [selectImage]);
+    if (post?.image) {
+      setImageView(`${IMG_URL}/${post.image}`);
+    }
+  }, [selectImage, post]);
 
   const handleChange = (e: React.ChangeEvent<any>) => {
     const { name, value, checked } = e.target;
@@ -199,17 +211,23 @@ function Edit() {
             >
               <img
                 className="image-post-view"
-                src={
-                  post
-                    ? `${IMG_URL}/${post.image}`
-                    : "https://cdn.shopify.com/s/files/1/0095/1205/8985/files/BLANK_INSIDE-min.jpeg"
-                }
+                src={imageView}
                 alt="image-post-view"
               />
             </div>
             <div className="form-write-right-action__submit">
-              <button onClick={(e) => handlePost(e, 1)}>Save as draft</button>
-              <button onClick={(e) => handlePost(e, 0)}>Post</button>
+              <button
+                onClick={(e) => handlePost(e, 1)}
+                disabled={!selectImage && !post?.image}
+              >
+                Save as draft
+              </button>
+              <button
+                onClick={(e) => handlePost(e, 0)}
+                disabled={!selectImage && !post?.image}
+              >
+                Post
+              </button>
             </div>
           </div>
         </div>

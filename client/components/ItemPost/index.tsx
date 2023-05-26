@@ -3,12 +3,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { IMG_URL } from "@/constant";
 import { Props } from "@/pages/[slug]";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import ActionPost from "../ActionPost";
 
 function ItemPost({ post }: Props) {
-  const router = useRouter();
   const { userLogin } = useSelector((state: any) => state.user);
+  const router = useRouter();
 
   return (
     <div className="item-blog">
@@ -33,15 +33,7 @@ function ItemPost({ post }: Props) {
           <Link href={`/${post?.url}`} className="item-blog-title">
             {post?.title}
           </Link>
-          {userLogin?.role === "admin" && (
-            <span>
-              <MdEdit
-                className="action-icon"
-                onClick={() => router.push(`edit?id=${post.id}`)}
-              />
-              <MdDelete className="action-icon" />
-            </span>
-          )}
+          {userLogin?.role === "admin" && <ActionPost id={post.id} />}
         </div>
         <p className="item-blog-text">{post?.description}</p>
       </div>
