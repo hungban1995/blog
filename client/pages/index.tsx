@@ -14,6 +14,7 @@ export type post = {
   author: string;
   createdAt: Date;
   catList: string;
+  author_avatar: string;
 };
 export default function Home() {
   const [categories, setCategories] = useState<any[]>();
@@ -48,7 +49,7 @@ export default function Home() {
         </div>
         <LoadMoreData />
         <div className="home-category-list">
-          <h1>Category</h1>
+          <h1>Categories List</h1>
           <div className="home-category-list-items">
             {categories &&
               categories.map((cat: any, idx: number) => {

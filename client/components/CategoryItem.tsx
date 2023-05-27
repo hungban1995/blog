@@ -14,7 +14,7 @@ interface Props {
 function CategoryItem({ category }: Props) {
   const router = useRouter();
   return (
-    <Card className="category-item-card">
+    <Card className="category-item-card col-3">
       <Card.Img
         src={`${IMG_URL}/${category.image}`}
         alt="cat"

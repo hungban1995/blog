@@ -11,6 +11,7 @@ import { IMG_URL } from "@/constant";
 import { post } from "..";
 import { useRouter } from "next/router";
 import { getNotify } from "@/stores/notificationReducer";
+import Loading from "@/components/Loading";
 const Editor = dynamic(() => import("../../components/Ckeditor"), {
   ssr: false,
 });
@@ -46,7 +47,9 @@ function Edit() {
           setPost(res.data.post);
           setCatIds(res.data.post.catList.split(","));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setPost(null);
       setCatIds([]);
@@ -126,13 +129,7 @@ function Edit() {
   return (
     <div className="write-container">
       {show && (
-        <Suspense
-          fallback={
-            <div style={{ backgroundColor: "red", height: "100vh" }}>
-              Loading
-            </div>
-          }
-        >
+        <Suspense fallback={<Loading />}>
           <ImagesManager
             show={show}
             setShow={setShow}
@@ -141,13 +138,7 @@ function Edit() {
         </Suspense>
       )}
       {activeCat && (
-        <Suspense
-          fallback={
-            <div style={{ backgroundColor: "red", height: "100vh" }}>
-              Loading
-            </div>
-          }
-        >
+        <Suspense fallback={<Loading />}>
           <CategoriesManager
             activeCat={activeCat}
             setActiveCat={setActiveCat}

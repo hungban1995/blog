@@ -1,0 +1,12 @@
+.loading-data {
+  background-color: rgba(128, 128, 128, 0.279);
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 999;
+}

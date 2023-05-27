@@ -44,10 +44,12 @@ export const getPostByCat = (id: string) => {
 }
 
 export const getByUrl = (url: string) => {
-    const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.content,posts.description,images.url AS image, users.username AS author, ' +
+    const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.content,posts.description,images.url AS image, users.username AS author,  users_images.url AS author_avatar, ' +
+
         ' GROUP_CONCAT(categories.title) AS catList' +
         ' FROM posts' +
         ' LEFT JOIN images ON posts.image = images.id LEFT JOIN users ON posts.author= users.id ' +
+        'LEFT JOIN images AS users_images ON users.avatar = users_images.id' +
         ' LEFT JOIN category_lookup ON posts.id = category_lookup.postId' +
         '  LEFT JOIN categories ON category_lookup.categoryId = categories.id' +
         ' WHERE posts.url = ?' +
@@ -70,6 +72,7 @@ export const getPostId = (id: string) => {
         '  LEFT JOIN categories ON category_lookup.categoryId = categories.id' +
         ' WHERE posts.id = ?' +
         '  GROUP BY posts.id'
+
     return new Promise((resolve, reject) => {
         db.query(q, [id], (err, data) => {
             if (err) reject(err)

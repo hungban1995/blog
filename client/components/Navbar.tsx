@@ -33,7 +33,9 @@ function Navbar() {
       .catch((err) => setLoading(false));
   }, [debounce]);
   useEffect(() => {
-    setValue("");
+    if (value) {
+      setValue("");
+    }
   }, [route]);
   const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -77,9 +79,11 @@ function Navbar() {
             </li>
             {userLogin?.id ? (
               <li className="item-menu">
-                <Link className="item-menu__action" href="/edit">
-                  <span className="item-menu__action-write">Write</span>
-                </Link>
+                {userLogin.role === "admin" && (
+                  <Link className="item-menu__action" href="/edit">
+                    <span className="item-menu__action-write">Write</span>
+                  </Link>
+                )}
                 <Link className="item-menu__action" href="/profile">
                   <span>{userLogin.username}</span>
                 </Link>
@@ -90,6 +94,7 @@ function Navbar() {
                     localStorage.removeItem("refreshToken");
                     localStorage.removeItem("accessToken");
                     dispatch(refreshLogin());
+                    route.push("/");
                   }}
                 >
                   Logout

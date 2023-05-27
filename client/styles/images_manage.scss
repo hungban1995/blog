@@ -1,15 +1,12 @@
 .image-manager {
-  display: grid;
-  grid-template-columns: 24.25% 24.25% 24.25% 24.25%;
-  column-gap: 1%;
-  row-gap: 2%;
+  max-height: 400px;
+  overflow: auto;
   .image-manager-upload {
     position: relative;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgba(128, 128, 128, 0.505);
     .image-upload-icon {
       font-size: 50px;
     }
@@ -25,17 +22,17 @@
     }
   }
   .image-manager-item {
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
+    padding-left: unset !important;
+    padding-right: unset !important;
+    padding: 3px !important;
     cursor: pointer;
-    border-radius: 5%;
     img {
       width: 100%;
+      aspect-ratio: 1/1;
       object-fit: cover;
     }
     &.active {
-      box-shadow: 1px 1px 10px 1px #fc894d;
+      box-shadow: 1px 1px 10px 1px #b1653c;
     }
   }
 }

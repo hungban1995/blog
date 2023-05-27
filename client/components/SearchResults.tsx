@@ -2,6 +2,7 @@ import { Slugify } from "@/libs/helpData";
 import Link from "next/link";
 import React from "react";
 import Spinner from "react-bootstrap/Spinner";
+import Loading from "./Loading";
 export interface data {
   id: number;
   title: string;
@@ -34,11 +35,7 @@ function SearchResults({ data, loading }: { data: data[]; loading: boolean }) {
         })
       ) : (
         <div className="search-results-loading">
-          {loading ? (
-            <Spinner animation="border" role="status" />
-          ) : (
-            <span>No results!</span>
-          )}
+          {loading ? <Spinner animation="border" /> : <span>No results!</span>}
         </div>
       )}
     </div>

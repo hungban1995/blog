@@ -14,8 +14,8 @@
   margin: 20px 0;
   .categories-page-list__item {
     padding-top: 10px;
-    display: grid;
-    grid-template-columns: 24.25% 24.25% 24.25% 24.25%;
-    gap: 1%;
+    .category-item-card {
+      margin: unset;
+    }
   }
 }

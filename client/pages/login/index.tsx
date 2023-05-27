@@ -40,7 +40,7 @@ function Login() {
     try {
       const res = await axiosApi.post("users/login", value);
       localStorage.setItem("userId", JSON.stringify(res.data.user.id));
-      // dispatch(getRefresh());
+      dispatch(getRefresh());
       dispatch(
         getNotify({
           show: true,

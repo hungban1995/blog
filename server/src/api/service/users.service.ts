@@ -1,6 +1,30 @@
 import { db } from "../../configs/db";
 import { UserType } from "../helpers/type";
 
+
+
+export const getAll = () => {
+    const q = "SELECT users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id";
+    return new Promise((resolve, reject) => {
+        db.query(q, (err, data) => {
+            if (err) reject(err)
+            resolve(data)
+        })
+    })
+}
+
+export const getByAdmin = () => {
+    const q = "SELECT users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id WHERE users.role = 'admin'";
+    return new Promise((resolve, reject) => {
+        db.query(q, (err, data) => {
+            if (err) reject(err)
+            resolve(data)
+        })
+    })
+}
+
+
+
 export const findUser = ({ email, id, username }: UserType) => {
     let q: string
     const params = { email, id, username }

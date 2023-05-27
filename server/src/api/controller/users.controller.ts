@@ -85,8 +85,17 @@ export const deleteUser: functionType = async (req, res, next) => {
 
 export const getAll: functionType = async (req, res, next) => {
     try {
-        const user: any = await service.findUser({})
-        res.status(200).json({ success: true, message: 'Get user success!', user })
+        const accessToken = req.headers.authorization as string
+        let decode: any
+        if (accessToken) {
+            decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string)
+        }
+        if (decode && decode.role === 'admin') {
+            const users: any = await service.getAll()
+            return res.status(200).json({ success: true, message: 'Get user success!', users })
+        }
+        const users: any = await service.getByAdmin()
+        res.status(200).json({ success: true, message: 'Get user success!', users })
     } catch (err) {
         next(err)
     }

@@ -22,8 +22,8 @@
       right: 0;
     }
   }
-  .item-blog__image {
+  img {
     width: 100%;
-    height: 300px;
+    aspect-ratio: 1/1;
   }
 }

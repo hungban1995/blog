@@ -27,7 +27,7 @@ export default function Categories({ categories }: Props) {
         </div>
         <div className="categories-page-list">
           <p style={{ fontWeight: "bold" }}>Explore our Categories</p>
-          <div className="categories-page-list__item">
+          <div className="categories-page-list__item row">
             {categories &&
               categories.map((category: TCategory, index: number) => {
                 return <CategoryItem category={category} key={index} />;

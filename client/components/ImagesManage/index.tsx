@@ -6,6 +6,7 @@ import Modal from "react-bootstrap/Modal";
 
 import { BiUpload } from "react-icons/bi";
 import { IMG_URL } from "@/constant";
+import { Spinner } from "react-bootstrap";
 export type Image = {
   id: number;
   url?: string;
@@ -20,16 +21,21 @@ interface Props {
 type fcChoose = (item: Image) => void;
 
 export default function Images({ show, setShow, setSelectImage }: Props) {
+  const [loading, setLoading] = useState(false);
+
   const [refresh, setRefresh] = useState(0);
   const [images, setImages] = useState([]);
   const [choose, setChoose] = useState<Image[]>([]);
   useEffect(() => {
     const getImages = async () => {
       try {
+        setLoading(true);
         const res = await axiosApi.get("images/get-all");
         setImages(res.data.images);
+        setLoading(false);
       } catch (error) {
         console.log(error);
+        setLoading(false);
       }
     };
     getImages();
@@ -63,6 +69,7 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
       let newData: number[] = [];
       choose.forEach((item: Image) => newData.push(item.id));
       await axiosApi.delete("images/delete", { data: newData });
+      setChoose([]);
       setRefresh((f) => f + 1);
     } catch (error) {
       console.log(error);
@@ -74,8 +81,8 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
         <Modal.Title>Images View</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <div className="image-manager">
-          <div className="image-manager-upload">
+        <div className="image-manager row">
+          <div className="image-manager-upload col-3">
             <BiUpload className="image-upload-icon" />
 
             <input
@@ -89,7 +96,7 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
               return (
                 <div
                   className={
-                    "image-manager-item " +
+                    "col-3 image-manager-item " +
                     (choose.includes(item) ? "active" : "")
                   }
                   key={idx}
@@ -99,6 +106,8 @@ export default function Images({ show, setShow, setSelectImage }: Props) {
                 </div>
               );
             })
+          ) : loading ? (
+            <Spinner animation="border" />
           ) : (
             <div>Image Not found!</div>
           )}

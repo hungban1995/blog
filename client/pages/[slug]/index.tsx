@@ -39,10 +39,7 @@ export default function Post({ post }: Props) {
             <div className="single-header-content-info">
               <div className="single-header-content-info-author">
                 <div className="single-header-content-info__avatar">
-                  <img
-                    src="https://basho.fueko.net/content/images/size/w300/2022/03/joshua-oyebanji-kMC1v6rBHMI-unsplash-2.jpg"
-                    alt="avatar"
-                  />
+                  <img src={`${IMG_URL}/${post.author_avatar}`} alt="avatar" />
                 </div>
                 <div className="single-header-content-info__author">
                   <span>{post?.author}</span>
