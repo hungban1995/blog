@@ -38,6 +38,13 @@ export const findUser = ({ email, id, username }: UserType) => {
             if (err) reject(err)
             resolve(data)
         })
+        db.end((err) => {
+            if (err) {
+                console.error('Error disconnecting from the database:', err);
+                return;
+            }
+            console.log('Disconnected from the MySQL database');
+        });
     })
 }
 
@@ -49,6 +56,13 @@ export const register = (user: UserType) => {
             if (err) reject(err)
             resolve(data)
         })
+        db.end((err) => {
+            if (err) {
+                console.error('Error disconnecting from the database:', err);
+                return;
+            }
+            console.log('Disconnected from the MySQL database');
+        });
     })
 }
 export const update = (user: UserType) => {
@@ -59,6 +73,13 @@ export const update = (user: UserType) => {
             if (err) reject(err)
             resolve(data)
         })
+        db.end((err) => {
+            if (err) {
+                console.error('Error disconnecting from the database:', err);
+                return;
+            }
+            console.log('Disconnected from the MySQL database');
+        });
     })
 }
 export const deleteUser = (id: string) => {
@@ -68,5 +89,12 @@ export const deleteUser = (id: string) => {
             if (err) rejects(err)
             resolve(data)
         })
+        db.end((err) => {
+            if (err) {
+                console.error('Error disconnecting from the database:', err);
+                return;
+            }
+            console.log('Disconnected from the MySQL database');
+        });
     })
 }
