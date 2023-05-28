@@ -23,13 +23,6 @@ export const getAll = (limit: number, offset: number) => {
             if (err) reject(err)
             resolve(data)
         })
-        db.end((err) => {
-            if (err) {
-                console.error('Error disconnecting from the database:', err);
-                return;
-            }
-            console.log('Disconnected from the MySQL database');
-        });
     })
 }
 
