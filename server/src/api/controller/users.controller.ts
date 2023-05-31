@@ -84,9 +84,11 @@ export const deleteUser: functionType = async (req, res, next) => {
         const { id } = req.params
         const accessToken = req.headers.authorization as string
         const decode = await verifyToken(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as decodeType
-        if (decode.id.toString() !== id && decode.role !== 'admin') return next({ status: 403, message: "You don't have permission delete this!" })
+        if ( decode.role !== 'admin') return next({ status: 403, message: "You don't have permission delete this!" })
+if(decode.id.toString()===id) return next({ status: 403, message: "You can't delete yourself!" })
         const user: any = await service.findUser({ id: id })
         if (user.length === 0) return next({ status: 404, message: 'User not found!' })
+
         await service.deleteUser(id)
         res.status(200).json({ success: true, message: "Delete user success!" })
     } catch (error) {
