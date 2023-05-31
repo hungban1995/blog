@@ -68,8 +68,8 @@ function Navbar() {
         >
           <ul className={"navbar-blog-menu-items"}>
             <li className="item-menu">
-              <Link className="item-menu__action" href="/">
-                Feature&apos;s
+              <Link className="item-menu__action" href="/users">
+                {userLogin?.role === "admin" ? "List Users" : "List Author"}
               </Link>
             </li>
             <li className="item-menu">

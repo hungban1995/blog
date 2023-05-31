@@ -52,7 +52,7 @@ export default function Users() {
                   <Card key={index} className="user-item-card m-1 col-3">
                     <Card.Img
                       src={`${IMG_URL}/${user.avatar}`}
-                      alt="cat"
+                      alt="avatar"
                       className="user-item-card__img"
                       onClick={() =>
                         router.push(`users/${user.username.toLowerCase()}`)
@@ -61,7 +61,10 @@ export default function Users() {
                     <Card.Body>
                       <Link
                         href={`users/${user.username.toLowerCase()}`}
-                        style={{ fontWeight: "bold", textDecoration: "none" }}
+                        style={{
+                          fontWeight: "bold",
+                          textDecoration: "none",
+                        }}
                       >
                         {user.username}
                       </Link>

@@ -7,6 +7,8 @@ const usersRouter = async (app: express.Express) => {
     router.post('/login', userLoginSchemaValidate, controller.login)
     router.get("/get-all", controller.getAll);
     router.get("/get-id/:id", controller.getId);
+    router.get("/get-username/:username", controller.getByUserName);
+
     router.put('/update/:id', controller.update)
     router.post("/refresh-token", controller.refreshToken); //refreshToken
     router.post('/logout')

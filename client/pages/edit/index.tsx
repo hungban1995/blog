@@ -129,7 +129,7 @@ function Edit() {
   return (
     <div className="write-container">
       {show && (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading active={true} />}>
           <ImagesManager
             show={show}
             setShow={setShow}
@@ -138,7 +138,7 @@ function Edit() {
         </Suspense>
       )}
       {activeCat && (
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading active={true} />}>
           <CategoriesManager
             activeCat={activeCat}
             setActiveCat={setActiveCat}

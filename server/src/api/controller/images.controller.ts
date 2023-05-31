@@ -21,7 +21,10 @@ export const upload: functionType = async (req, res, next) => {
 }
 export const getAll: functionType = async (req, res, next) => {
     try {
-        const images: any = await service.findImages({}, null)
+        const { page } = req.query
+        const limit = 5;
+        const offset = (Number(page) - 1) * limit;
+        const images: any = await service.getAll(limit, offset)
 
         res.status(200).json({ success: true, message: 'Get images success!', images })
 

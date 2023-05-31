@@ -8,13 +8,13 @@ import { useDispatch } from "react-redux";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useRouter } from "next/router";
 
-function ActionPost({ id }: { id: number }) {
+function ActionData({ id, type }: { id: number; type: string }) {
   const router = useRouter();
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const handleDelete = async () => {
     try {
-      const res = await axiosApi.delete("posts/delete/" + id);
+      const res = await axiosApi.delete(`${type}s/delete/` + id);
       dispatch(
         getNotify({
           show: true,
@@ -36,7 +36,7 @@ function ActionPost({ id }: { id: number }) {
   };
   const popover = (
     <Popover id="popover-basic">
-      <Popover.Header as="h3">Delete this post?</Popover.Header>
+      <Popover.Header as="h3">Delete this {type}?</Popover.Header>
       <Popover.Body>
         <Button
           variant="danger"
@@ -74,4 +74,4 @@ function ActionPost({ id }: { id: number }) {
   );
 }
 
-export default ActionPost;
+export default ActionData;

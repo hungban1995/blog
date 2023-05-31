@@ -48,6 +48,17 @@ export const getId: functionType = async (req, res, next) => {
     }
 }
 
+
+export const getByUserName: functionType = async (req, res, next) => {
+    try {
+        const { username } = req.params
+        const user: any = await service.getByUserName(username)
+        res.status(200).json({ success: true, message: 'Get categories success!', user: user[0] })
+    } catch (error) {
+        next(error)
+
+    }
+}
 export const update: functionType = async (req, res, next) => {
     try {
         const { id } = req.params

@@ -81,6 +81,23 @@
     display: grid !important;
     grid-template-columns: 50% 50% !important;
   }
+  .form-write {
+    flex-direction: column;
+    .form-write-left {
+      width: 100% !important;
+    }
+    .form-write-right {
+      width: 100% !important;
+      display: flex;
+      flex-direction: row !important;
+      .form-write-right-option {
+        width: 50%;
+      }
+      .form-write-right-action {
+        width: 50%;
+      }
+    }
+  }
 }
 @media screen and (max-width: 480px) {
   .register,

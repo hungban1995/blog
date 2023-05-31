@@ -5,7 +5,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { post } from "..";
-import ActionPost from "@/components/ActionPost";
+import ActionPost from "@/components/ActionData";
 export interface Props {
   post: post;
 }
@@ -47,7 +47,9 @@ export default function Post({ post }: Props) {
                 </div>
               </div>
               <div className="single-header-content-info__action">
-                {userLogin?.role === "admin" && <ActionPost id={post.id} />}
+                {userLogin?.role === "admin" && (
+                  <ActionPost type="post" id={post.id} />
+                )}
               </div>
             </div>
           </div>
@@ -66,10 +68,10 @@ export default function Post({ post }: Props) {
 export async function getServerSideProps({
   params,
 }: {
-  params: { slug: string };
+  params: { post: string };
 }) {
   try {
-    const url = params.slug as string;
+    const url = params.post as string;
     const response = await axiosApi.get("posts/get-by-url/" + url);
     const post = response.data.post;
     if (!post)

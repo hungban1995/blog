@@ -1,0 +1,31 @@
+.back-to-top {
+  box-shadow: 0 0 3px 2px #0000001a;
+  position: fixed;
+  z-index: 999;
+  background-color: #fff;
+  transition: all 0.3s ease;
+  bottom: 70px;
+  right: 30px;
+  visibility: hidden;
+  opacity: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background: orange;
+    .icon-to-top {
+      color: #fff;
+    }
+  }
+  .icon-to-top {
+    width: 100%;
+    color: orange;
+    font-size: 24px;
+  }
+  &.active {
+    visibility: visible;
+    opacity: 1;
+  }
+}

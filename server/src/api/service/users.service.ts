@@ -23,7 +23,15 @@ export const getByAdmin = () => {
     })
 }
 
-
+export const getByUserName = (username: string) => {
+    const q = "SELECT users.id, users.username, users.email, images.url AS avatar, users.role FROM users LEFT JOIN images ON users.avatar = images.id WHERE  users.username = ? ";
+    return new Promise((resolve, rejects) => {
+        db.query(q, [username], (error, data) => {
+            if (error) rejects(error)
+            resolve(data)
+        })
+    })
+}
 
 export const findUser = ({ email, id, username }: UserType) => {
     let q: string

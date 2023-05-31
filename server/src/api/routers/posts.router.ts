@@ -9,6 +9,8 @@ const postsRouter = async (app: express.Express) => {
     router.put("/update/:id", controller.updatePost);
 
     router.get("/get-by-url/:url", controller.getByUrl);
+    router.get("/get-by-author/:authorId", controller.getByAuthor);
+
 
     router.get('/get-by-category/:id', controller.getByCat)
     router.delete('/delete/:id', controller.deletePost)

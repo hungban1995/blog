@@ -18,6 +18,18 @@ export const findImages = ({ id, uploadBy }: ImageType, ids: string | null) => {
     })
 }
 
+export const getAll = (limit: number, offset: number) => {
+    const q = "SELECT id,url,alt,uploadBy FROM images "
+        + ' ORDER BY images.createdAt DESC'
+    const values = offset ? [limit, offset] : []
+    return new Promise((resolve, rejects) => {
+        db.query(q, values, (err, data) => {
+            if (err) rejects(err)
+            resolve(data)
+        })
+    })
+}
+
 
 export const upload = (image: ImageType) => {
     const q = "INSERT INTO images(`url`,`uploadBy`) VALUES (?)";

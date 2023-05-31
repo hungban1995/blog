@@ -3,7 +3,7 @@ import { BASE_URL } from "@/constant"
 import axios from 'axios';
 
 const axiosApi = axios.create({
-    baseURL: BASE_URL
+    baseURL: BASE_URL,
 });
 
 // REQUEST

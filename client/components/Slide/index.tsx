@@ -4,9 +4,10 @@ import { post } from "@/pages";
 
 const settings = {
   dots: true,
-  infinite: false,
+  infinite: true,
   speed: 500,
   slidesToShow: 4,
+  autoplay: true,
   slidesToScroll: 4,
   initialSlide: 0,
   responsive: [

@@ -82,6 +82,18 @@ export const getByUrl: functionType = async (req, res, next) => {
         next(error)
     }
 }
+
+
+export const getByAuthor: functionType = async (req, res, next) => {
+    try {
+        const { authorId } = req.params
+        const posts: any = await services.getByAuthor(authorId)
+        res.status(200).json({ success: true, message: 'Get posts success!', posts: posts })
+
+    } catch (error) {
+        next(error)
+    }
+}
 export const deletePost: functionType = async (req, res, next) => {
     try {
         const { id } = req.params
