@@ -49,7 +49,7 @@ export default function Page({ user }: Props) {
                 {user?.username}
               </Link>
               {userLogin?.role === "admin" && (
-                <ActionPost type="user" id={user.id} />
+                <ActionPost type="user" id={user?.id} />
               )}
             </div>
             <p>
@@ -84,6 +84,13 @@ export async function getServerSideProps({
     const username = params.username as string;
     const response = await axiosApi.get("users/get-username/" + username);
     const user = response.data.user;
+    if (!user)
+      return {
+        redirect: {
+          destination: "/users",
+          permanent: false,
+        },
+      };
     return {
       props: {
         user,

@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 
 function ActionData({ id, type }: { id: number; type: string }) {
   const router = useRouter();
+  const typeEdit = type === "post" ? `edit?id=${id}` : `/profile?id=${id}`;
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
   const handleDelete = async () => {
@@ -57,7 +58,7 @@ function ActionData({ id, type }: { id: number; type: string }) {
       <div className="action-icon">
         <MdEdit
           className="action-icon__edit"
-          onClick={() => router.push(`edit?id=${id}`)}
+          onClick={() => router.push(typeEdit)}
         />
       </div>
       <OverlayTrigger

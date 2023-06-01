@@ -25,7 +25,7 @@ type Props = {
 export default function UpdateUser({ user, setUpdate }: Props) {
   const dispatch = useDispatch();
   const {
-    reset,
+    setValue,
     register,
     handleSubmit,
     formState: { errors },
@@ -35,7 +35,10 @@ export default function UpdateUser({ user, setUpdate }: Props) {
   });
 
   useEffect(() => {
-    reset({ ...user });
+    setValue("username", user.username);
+    setValue("role", user.role);
+    setValue("password", user.password);
+    setValue("retypePassword", user.retypePassword);
   }, [user]);
   const onSubmit = async (data: FormData) => {
     try {
@@ -50,7 +53,7 @@ export default function UpdateUser({ user, setUpdate }: Props) {
         getNotify({
           show: true,
           message: error.response.data.message,
-          status: "success",
+          status: "error",
         })
       );
     }
@@ -79,7 +82,11 @@ export default function UpdateUser({ user, setUpdate }: Props) {
         <span className="error">Field {errors.retypePassword.message}</span>
       )}
 
-      <select className="form-select mt-3" {...register("role")}>
+      <select
+        className="form-select mt-3"
+        {...register("role")}
+        disabled={user?.role === "user"}
+      >
         <option value="user">User</option>
         <option value="admin">Admin</option>
       </select>

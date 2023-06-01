@@ -49,7 +49,7 @@ export default function Users() {
             {users &&
               users.map((user: any, index: number) => {
                 return (
-                  <Card key={index} className="user-item-card m-1 col-3">
+                  <Card key={index} className="user-item-card col-3">
                     <Card.Img
                       src={`${IMG_URL}/${user.avatar}`}
                       alt="avatar"

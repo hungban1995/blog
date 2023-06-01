@@ -1,4 +1,4 @@
-import { db } from "../../configs/db"
+import { db } from "../../configs/db.config"
 
 export const createPost = (post: any) => {
     const q = 'INSERT INTO posts(title,description,content,image,author,isDraft,url) VALUES(?)'
@@ -66,8 +66,8 @@ export const getByUrl = (url: string) => {
     })
 }
 export const getByAuthor = (authorId: string) => {
-    const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.description,images.url AS image, users.username AS author,  users_images.url AS author_avatar, ' +
-
+    const q = 'SELECT posts.id,posts.url,posts.createdAt, posts.title,posts.description,images.url AS image, ' +
+        ' users.username AS author,  users_images.url AS author_avatar, ' +
         ' GROUP_CONCAT(categories.title) AS catList' +
         ' FROM posts' +
         ' LEFT JOIN images ON posts.image = images.id LEFT JOIN users ON posts.author= users.id ' +

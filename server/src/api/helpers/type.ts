@@ -12,6 +12,7 @@ export type UserType =
         role?: string,
         retypePassword?: string
     }
+export type P = keyof UserType
 export type decodeType = { id: string, role: string, iat: number, exp: number }
 export type ImageType = {
     id?: string,

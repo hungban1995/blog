@@ -1,4 +1,4 @@
-import { db } from "../../configs/db";
+import { db } from "../../configs/db.config";
 import { ImageType } from "../helpers/type";
 
 export const findImages = ({ id, uploadBy }: ImageType, ids: string | null) => {

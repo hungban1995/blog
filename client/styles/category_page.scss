@@ -18,6 +18,21 @@
       height: 100%;
     }
   }
+  .category-page-content-title {
+    position: relative;
+    width: max-content;
+    margin: auto;
+    .category-page-content-title__num {
+      background-color: gainsboro;
+      border-radius: 5px;
+      padding: 0 5px;
+      font-size: 20px;
+      position: absolute;
+      font-weight: bold;
+      top: -10px;
+      right: -15px;
+    }
+  }
 }
 .category-post-list {
   .category-post-list-items {

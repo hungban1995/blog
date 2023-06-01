@@ -1,6 +1,4 @@
-import { db } from "../../configs/db"
-
-
+import { db } from "../../configs/db.config"
 export const getOneCat = (id?: string | null, title?: string) => {
     let q = 'SELECT categories.id,categories.title, categories.description, images.url AS image  FROM categories LEFT JOIN images ON categories.image = images.id'
     let values = [id, title] as any

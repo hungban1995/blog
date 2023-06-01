@@ -1,4 +1,4 @@
-import { db } from "../../configs/db"
+import { db } from "../../configs/db.config"
 
 export const searchData = (q: string) => {
     const query = "SELECT id, title, description, 'post' AS data_type FROM posts WHERE title LIKE ? OR description LIKE ? " +

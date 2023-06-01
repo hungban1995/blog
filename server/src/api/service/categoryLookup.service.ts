@@ -1,4 +1,4 @@
-import { db } from "../../configs/db"
+import { db } from "../../configs/db.config"
 
 
 export const createCatPost = (postId: string, catIds: string) => {

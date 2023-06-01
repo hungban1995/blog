@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import UpdateUser from "@/components/FormUpdate/UpdateUser";
 import { Image } from "@/components/ImagesManage";
+import Loading from "@/components/Loading";
 import { IMG_URL } from "@/constant";
 import { axiosApi } from "@/libs/fetchData";
 import { getRefresh } from "@/stores/refreshReducer";
@@ -18,15 +19,24 @@ function Index() {
   const router = useRouter();
   const [show, setShow] = useState<boolean>(false);
   const [selectImage, setSelectImage] = useState<Image | null>();
-
+  const [userUpdate, setUserUpdate] = useState<any>();
   useEffect(() => {
     if (selectImage) {
       axiosApi
-        .put("users/update/" + userLogin.id, { avatar: selectImage?.id })
+        .put("users/update/" + userUpdate.id, { avatar: selectImage?.id })
         .then((res) => dispatch(getRefresh()))
         .catch((err) => console.log(err));
     }
   }, [selectImage]);
+  useEffect(() => {
+    const id = router.query.id;
+    if (id) {
+      axiosApi
+        .get("/users/get-id/" + id)
+        .then((res) => setUserUpdate(res.data.user))
+        .catch((err) => console.log(err));
+    } else setUserUpdate(userLogin);
+  }, [router, update, userLogin]);
   return (
     <>
       <Head>
@@ -36,13 +46,7 @@ function Index() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {show && (
-        <Suspense
-          fallback={
-            <div style={{ backgroundColor: "red", height: "100vh" }}>
-              Loading
-            </div>
-          }
-        >
+        <Suspense fallback={<Loading active={true} />}>
           <ImagesLib
             show={show}
             setShow={setShow}
@@ -55,13 +59,13 @@ function Index() {
           <div className="profile-info-avatar" onClick={() => setShow(true)}>
             <img
               src={
-                userLogin?.avatar
-                  ? `${IMG_URL}/${userLogin.avatar}`
+                userUpdate?.avatar
+                  ? `${IMG_URL}/${userUpdate.avatar}`
                   : "https://www.gravatar.com/avatar/b9e94b90a0fffe1d993ee11e9ceddf95?s=250&r=g&d=blank"
               }
               alt="avatar"
             />
-            {!userLogin?.avatar && <AiOutlineUser className="avatar-icon" />}
+            {!userUpdate?.avatar && <AiOutlineUser className="avatar-icon" />}
           </div>
           <div className="profile-info-detail">
             <div className="profile-info-detail-title">
@@ -80,18 +84,18 @@ function Index() {
             </div>
             {update ? (
               <div className="profile-info-detail-update">
-                <UpdateUser user={userLogin} setUpdate={setUpdate} />
+                <UpdateUser user={userUpdate} setUpdate={setUpdate} />
               </div>
             ) : (
               <div className="profile-info-detail-view">
                 <div className="profile-info-detail__username">
-                  Username: {userLogin?.username}
+                  Username: {userUpdate?.username}
                 </div>
                 <div className="profile-info-detail__email">
-                  Email: {userLogin?.email}
+                  Email: {userUpdate?.email}
                 </div>
                 <div className="profile-info-detail__role">
-                  Role {userLogin?.role}
+                  Role {userUpdate?.role}
                 </div>
               </div>
             )}

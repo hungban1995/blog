@@ -1,5 +1,5 @@
-import { db } from "../../configs/db";
-import { UserType } from "../helpers/type";
+import { db } from "../../configs/db.config";
+import { P, UserType } from "../helpers/type";
 
 
 
@@ -59,11 +59,13 @@ export const register = (user: UserType) => {
         })
     })
 }
-export const update = (user: UserType) => {
-
+export const update = (user: UserType, id: string) => {
+    Object.keys(user).forEach((key: string) => {
+        if (!user[key as P]) delete user[key as P]
+    })
     const q = "UPDATE users SET ? WHERE `id` = ?";
     return new Promise((resolve, reject) => {
-        db.query(q, [user, user.id], (err, data) => {
+        db.query(q, [user, id], (err, data) => {
             if (err) reject(err)
             resolve(data)
         })

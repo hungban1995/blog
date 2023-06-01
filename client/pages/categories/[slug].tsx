@@ -12,7 +12,7 @@ interface Props {
   };
 }
 export default function Page({ category }: Props) {
-  const [posts, setPosts] = useState<any[]>();
+  const [posts, setPosts] = useState<any[]>([]);
   useEffect(() => {
     if (category?.id) {
       axiosApi
@@ -35,17 +35,25 @@ export default function Page({ category }: Props) {
             <img src={`${IMG_URL}/${category?.image}`} alt="cat" />
           </div>
           <div className="category-page-content">
-            <h1>{category?.title} </h1>
+            <h1 className="category-page-content-title">
+              {category?.title}
+              <span className="category-page-content-title__num">
+                {posts.length}
+              </span>
+            </h1>
             <p>{category?.description}</p>
           </div>
         </div>
         <div className="category-post-list">
           <p>Check out the latest posts</p>
           <div className="category-post-list-items">
-            {posts?.length &&
+            {posts?.length > 0 ? (
               posts.map((post: any, idx: number) => {
                 return <ItemPost key={idx} post={post} />;
-              })}
+              })
+            ) : (
+              <span>Post not found!</span>
+            )}
           </div>
         </div>
       </main>
